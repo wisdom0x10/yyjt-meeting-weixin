@@ -1,0 +1,5 @@
+<!--index.wxml-->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <mp-html content="{{ text }}" />
+  <van-button type="primary" bind:click="handleClick"> Change </van-button>
+</scroll-view>
