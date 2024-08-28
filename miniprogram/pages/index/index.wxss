@@ -8,3 +8,13 @@ page {
   flex: 1;
   overflow-y: hidden;
 }
+
+.detail_title {
+  height: 80rpx;
+  line-height: 80rpx;
+  font-weight: 900;
+}
+
+.detail_scroll {
+  height: calc(100% - 80rpx);
+}

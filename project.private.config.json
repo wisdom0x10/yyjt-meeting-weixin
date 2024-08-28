@@ -4,5 +4,18 @@
   "setting": {
     "compileHotReLoad": true
   },
-  "libVersion": "3.5.4"
+  "libVersion": "3.5.4",
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "扫码进入",
+          "pathName": "pages/index/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": 1011
+        }
+      ]
+    }
+  }
 }

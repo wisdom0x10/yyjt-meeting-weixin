@@ -1,0 +1,10 @@
+.flex-end {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.task-item-wrap {
+  word-break: break-all;
+}

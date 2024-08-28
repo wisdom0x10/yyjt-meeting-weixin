@@ -1,0 +1,48 @@
+<view>
+  <van-cell title-width="200rpx" title="工作任务" value="{{ value.title }}" />
+  <van-cell
+    title-width="200rpx"
+    title="任务描述"
+    value="{{ value.description }}"
+    value-class="task-item-wrap"
+  />
+  <van-cell
+    title-width="200rpx"
+    title="预期成果"
+    value="{{ value.expectedResult }}"
+    value-class="task-item-wrap"
+  />
+  <van-cell
+    title-width="200rpx"
+    title="评判标准"
+    value="{{ value.criterion }}"
+    value-class="task-item-wrap"
+  />
+  <van-cell title-width="200rpx" title="责任人">
+    <view class="flex-end">
+      <van-tag color="#333" wx:for="{{ value.headerList }}" wx:key="index">
+        {{ item }}
+      </van-tag>
+    </view>
+  </van-cell>
+  <van-cell title-width="200rpx" title="截止时间" value="{{ value.endTime }}" />
+  <van-cell
+    title-width="200rpx"
+    title="奖惩措施"
+    value="{{ value.incentiveMeasures }}"
+    value-class="task-item-wrap"
+  />
+  <van-cell title-width="200rpx" title="检查人">
+    <view class="flex-end">
+      <van-tag color="#333" wx:for="{{ value.checkerList }}" wx:key="index">
+        {{ item }}
+      </van-tag>
+    </view>
+  </van-cell>
+  <van-cell
+    title-width="200rpx"
+    title="检查结果"
+    value="{{ value.checkText }}"
+    value-class="task-item-wrap"
+  />
+</view>

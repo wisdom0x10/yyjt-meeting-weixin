@@ -1,0 +1,10 @@
+<!--index.wxml-->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <van-row gutter="10">
+    <van-col span="会议主题"></van-col>
+    <van-col span="16">span: 8</van-col>
+  </van-row>
+  <van-popup>
+    <mp-html content="{{ content }}"></mp-html>
+  </van-popup>
+</scroll-view>

@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "task-item": "../task-item/task-item"
+  }
+}
