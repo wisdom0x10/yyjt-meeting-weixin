@@ -1,5 +1,9 @@
 import './store/index'
+import { storeDispatch, storeCommit } from 'wxminishareddata'
 
 App<IAppOption>({
-  onLaunch() {}
+  async onLaunch(options) {
+    storeCommit('setId', options.query.id ?? 14)
+    await storeDispatch('login')
+  }
 })

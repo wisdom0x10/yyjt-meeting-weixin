@@ -1,35 +1,111 @@
 import Store from 'wxminishareddata'
 import Storage from '../utils/storage'
-import { CACHE } from '../enums/cache'
-
-const initData = () => {
-  return {
-    appName: Storage.get(CACHE.USER_INFO, '会议纪要管理')
-  }
-}
+import { CACHE, LOGIN_TYPE } from '../enums/index'
+import { APP_ID } from '../configs/index'
+import * as Api from '../api/index'
+import { wxLogin } from '../utils/promise'
+import { encryptPwd } from '../utils/rsa'
 
 export default new Store({
-  data: initData(),
+  data: {
+    appId: APP_ID,
+
+    loading: false,
+
+    loginType: LOGIN_TYPE.NOT_LOGIN,
+    token: null,
+
+    id: Storage.get(CACHE.ID)
+  },
   getters: {
-    getAppName: (data: { appName: string }) => {
-      console.log('getter执行了', data)
-      return '我的名字' + data.appName
+    getAppId(data: { appid: string }) {
+      return data.appid
     }
   },
   mutations: {
-    setAppName(data: any, val: string) {
-      data.appName = val
+    setLoading(target: any, data: any) {
+      target.loading = data.value
+      if (data.value) {
+        wx.showLoading({
+          title: data.title ?? '加载中',
+          mask: data.mask ?? true
+        })
+      } else {
+        wx.hideLoading()
+      }
+    },
+    setAppName(target: any, data: string) {
+      target.appName = data
+    },
+    setLoginType(target: any, data?: LOGIN_TYPE) {
+      target.loginType = data
+    },
+    setUserInfo(target: any, data: Api.UserType) {
+      if (data) {
+        target.token = `${data.tokenPrefix} ${data.tokenValue}`
+      } else {
+        target.token = null
+      }
+    },
+    setId(target: any, data: any) {
+      if (data) {
+        target.id = data
+        Storage.set(CACHE.ID, data)
+      }
     }
   },
   actions: {
-    async getUserInfo({ storeCommit }: any) {
-      setTimeout(() => {
-        console.log('dispatch获取用户信息')
-        storeCommit('setUserInfo', {
-          name: '张三',
-          age: 18
+    async login({ storeCommit }: any) {
+      storeCommit('setLoading', { value: true })
+      try {
+        const wxloginRes = await wxLogin()
+
+        const { data: loginData } = await Api.login({ code: wxloginRes.code })
+
+        if (!loginData.name) {
+          // 未登录
+          storeCommit('setLoginType', LOGIN_TYPE.NOT_REGISTRY)
+        } else {
+          storeCommit('setUserInfo', loginData)
+          // 已登录
+          if (loginData.attentionMp) {
+            // 已授权
+            storeCommit('setLoginType', LOGIN_TYPE.READY)
+          } else {
+            // 已授权
+            storeCommit('setLoginType', LOGIN_TYPE.NOT_FOLLOW)
+          }
+        }
+      } finally {
+        storeCommit('setLoading', { value: false })
+      }
+    },
+    async register({ storeCommit }: any, data: any) {
+      try {
+        storeCommit('setLoading', { value: true })
+
+        const { code } = await wxLogin()
+
+        const encryptPassword = await encryptPwd(data.password)
+
+        const { data: registerData } = await Api.register({
+          ...data,
+          password: encryptPassword,
+          code
         })
-      }, 1500)
+
+        storeCommit('setUserInfo', registerData)
+        // 已登录
+        if (registerData.attentionMp) {
+          // 已授权
+          storeCommit('setLoginType', LOGIN_TYPE.READY)
+        } else {
+          // 未授权
+          storeCommit('setLoginType', LOGIN_TYPE.NOT_FOLLOW)
+        }
+      } finally {
+        storeCommit('setLoading', { value: false })
+      }
     }
   }
 })

@@ -1,4 +1,6 @@
 {
-  "navigationBarTitleText": "",
-  "usingComponents": {}
+  "usingComponents": {
+    "task-list": "../../components/task-list/task-list"
+  },
+  "enablePullDownRefresh": true
 }

@@ -13,6 +13,7 @@
     "@vant/weapp": "^1.11.6",
     "dayjs": "^1.11.13",
     "mp-html": "^2.5.0",
-    "wxminishareddata": "^2.1.1"
+    "wxminishareddata": "^2.1.1",
+    "wxmp-rsa": "^2.1.0"
   }
 }

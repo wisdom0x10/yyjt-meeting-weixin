@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "dept-picker": "../../components/dept-picker/dept-picker",
+    "van-toast": "@vant/weapp/toast/index"
+  }
+}

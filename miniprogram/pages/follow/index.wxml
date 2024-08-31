@@ -1,0 +1,26 @@
+<view style="padding: 25rpx">
+  <block wx:if="{{ index === 1 }}">
+    <van-image
+      width="700rpx"
+      height="700rpx"
+      src="/static/qr.jpg"
+      show-menu-by-longpress
+    />
+    <view style="display: flex; flex-direction: column; gap: 20rpx">
+      <van-button type="primary" block bind:click="next">
+        长按图片关注公众号后、点击授权
+      </van-button>
+
+      <van-button type="primary" block bind:click="refresh">
+        已授权，点击刷新
+      </van-button>
+    </view>
+  </block>
+
+  <web-view
+    src="{{ src }}"
+    style="height: 100rpx"
+    bindload="handleLoad"
+    wx:elif="{{ index === 2 }}"
+  />
+</view>

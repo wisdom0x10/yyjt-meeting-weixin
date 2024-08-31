@@ -2,7 +2,7 @@
   <van-collapse-item
     wx:for="{{ data }}"
     wx:key="index"
-    title="{{ item.description }}"
+    title="{{ item.title }}"
     name="{{ item.id }}"
   >
     <task-item value="{{ item }}" expandAll />

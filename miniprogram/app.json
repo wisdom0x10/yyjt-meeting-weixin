@@ -1,5 +1,5 @@
 {
-  "pages": ["pages/index/index", "pages/detail/index"],
+  "pages": ["pages/login/index", "pages/detail/index", "pages/follow/index"],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "会议纪要管理",
@@ -9,8 +9,7 @@
   "lazyCodeLoading": "requiredComponents",
   "usingComponents": {
     "mp-html": "mp-html",
-    "mp-form": "weui-miniprogram/form/form",
-    "mp-toptips": "weui-miniprogram/toptips/toptips",
+    "van-image": "@vant/weapp/image/index",
     "van-button": "@vant/weapp/button/index",
     "van-row": "@vant/weapp/row/index",
     "van-col": "@vant/weapp/col/index",
@@ -20,9 +19,8 @@
     "van-cell-group": "@vant/weapp/cell-group/index",
     "van-tag": "@vant/weapp/tag/index",
     "van-collapse": "@vant/weapp/collapse/index",
-    "van-collapse-item": "@vant/weapp/collapse-item/index"
-  },
-  "useExtendedLib": {
-    "weui": true
+    "van-collapse-item": "@vant/weapp/collapse-item/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-picker": "@vant/weapp/picker/index"
   }
 }

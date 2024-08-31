@@ -1,3 +1,6 @@
+import { BASE_URL } from '../configs/index'
+import { getStoreData } from 'wxminishareddata'
+
 interface RequestOptions {
   url: string // 请求的 URL，必填项
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' // 请求方法，选填，默认为 'GET'
@@ -58,9 +61,9 @@ class Request {
         wx.request({
           ...interceptedOptions,
           success: async (res) => {
-            let response: ResponseData<T> = res.data
+            let response: ResponseData<T> = res.data as any
             response = await this.applyResponseInterceptors(response)
-            if (response.code === 200) {
+            if (response.code === 20000) {
               resolve(response)
             } else {
               reject(response)
@@ -78,3 +81,24 @@ class Request {
 }
 
 export const httpClient = new Request()
+
+httpClient.addRequestInterceptor((options) => {
+  const token = getStoreData().token
+
+  const $options = {
+    ...options,
+    url: BASE_URL + options.url
+  }
+
+  if (token) {
+    if ($options.header) {
+      $options.header['Authorization'] = token
+    } else {
+      $options.header = {
+        Authorization: token
+      }
+    }
+  }
+
+  return $options
+})

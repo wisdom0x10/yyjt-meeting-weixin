@@ -1,0 +1,10 @@
+<van-popup show="{{ visible }}" position="bottom" bind:close="close">
+  <van-picker
+    show-toolbar
+    title="部门"
+    value-key="text"
+    columns="{{ columns }}"
+    bind:cancel="onCancel"
+    bind:confirm="onConfirm"
+  />
+</van-popup>

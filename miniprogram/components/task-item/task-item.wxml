@@ -18,12 +18,10 @@
     value="{{ value.criterion }}"
     value-class="task-item-wrap"
   />
-  <van-cell title-width="200rpx" title="责任人">
-    <view class="flex-end">
-      <van-tag color="#333" wx:for="{{ value.headerList }}" wx:key="index">
-        {{ item }}
-      </van-tag>
-    </view>
+  <van-cell title-width="200rpx" title="责任人" value-class="flex-right">
+    <van-tag color="#333" wx:for="{{ value.headerList }}" wx:key="index">
+      {{ item }}
+    </van-tag>
   </van-cell>
   <van-cell title-width="200rpx" title="截止时间" value="{{ value.endTime }}" />
   <van-cell
