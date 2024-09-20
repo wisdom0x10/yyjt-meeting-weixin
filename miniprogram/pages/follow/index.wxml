@@ -1,5 +1,5 @@
 <view style="padding: 25rpx">
-  <block wx:if="{{ index === 1 }}">
+  <block>
     <van-image
       width="700rpx"
       height="700rpx"
@@ -7,20 +7,13 @@
       show-menu-by-longpress
     />
     <view style="display: flex; flex-direction: column; gap: 20rpx">
-      <van-button type="primary" block bind:click="next">
-        长按图片关注公众号后、点击授权
-      </van-button>
+      <view>1. 长按图片关注公众号</view>
+      <view>2. 点击刷新按钮</view>
+      <view style="color: #999; font-size: 12px">
+        如果已关注公众号、刷新后仍停留在该页面，请先取消关注公众号，再重复步骤1、步骤2
+      </view>
 
-      <van-button type="primary" block bind:click="refresh">
-        已授权，点击刷新
-      </van-button>
+      <van-button type="primary" block bind:click="refresh"> 刷新 </van-button>
     </view>
   </block>
-
-  <web-view
-    src="{{ src }}"
-    style="height: 100rpx"
-    bindload="handleLoad"
-    wx:elif="{{ index === 2 }}"
-  />
 </view>

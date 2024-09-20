@@ -23,13 +23,13 @@
       {{ item }}
     </van-tag>
   </van-cell>
-  <van-cell title-width="200rpx" title="截止时间" value="{{ value.endTime }}" />
   <van-cell
     title-width="200rpx"
     title="奖惩措施"
     value="{{ value.incentiveMeasures }}"
     value-class="task-item-wrap"
   />
+  <van-cell title-width="200rpx" title="截止时间" value="{{ value.endTime }}" />
   <van-cell title-width="200rpx" title="检查人">
     <view class="flex-end">
       <van-tag color="#333" wx:for="{{ value.checkerList }}" wx:key="index">

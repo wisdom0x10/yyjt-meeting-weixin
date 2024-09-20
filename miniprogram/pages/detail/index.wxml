@@ -23,6 +23,21 @@
       {{ item }}
     </van-tag>
   </van-cell>
+  <van-cell title-width="200rpx" title="会议主持人" value-class="flex-right">
+    <van-tag color="#333">
+      {{ moderator }}
+    </van-tag>
+  </van-cell>
+  <van-cell title-width="200rpx" title="会议记录人" value-class="flex-right">
+    <van-tag color="#333">
+      {{ recorder }}
+    </van-tag>
+  </van-cell>
+  <van-cell title-width="200rpx" title="抄送人" value-class="flex-right">
+    <van-tag color="#333" wx:for="{{ carbonCopyList }}" wx:key="index">
+      {{ item }}
+    </van-tag>
+  </van-cell>
   <van-cell
     title-width="200rpx"
     title="参会人员(外部)"
@@ -58,7 +73,7 @@
       确认任务
     </van-button>
   </view>
-
+  <view style="height: 25rpx"></view>
   <van-popup
     show="{{ visible }}"
     position="bottom"

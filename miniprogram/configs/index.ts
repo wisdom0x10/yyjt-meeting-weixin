@@ -22,8 +22,6 @@ switch (miniProgram.envVersion) {
     break
 }
 
-console.log('miniProgram.envVersion :>> ', miniProgram.envVersion)
-
 const APP_ID = 'wx189c8c1a2792ca8f'
 
 export { BASE_URL, APP_ID, BASE_URL_HTTP }

@@ -1,6 +1,10 @@
 import { themeMixin } from '../../behaviors/theme'
 import * as Api from '../../api/index'
-import { effect, getStoreData, storeCommit } from 'wxminishareddata'
+import { getStoreData, storeCommit } from 'wxminishareddata'
+import { wxLogin } from '../../utils/promise'
+import { LOGIN_TYPE, PATH } from '../../enums/index'
+
+const app = getApp<IAppOption>()
 
 Page({
   behaviors: [themeMixin],
@@ -8,11 +12,11 @@ Page({
     id: undefined as undefined | string,
     title: undefined as undefined | string,
     type: undefined as undefined | string,
-    tags: [],
+    tags: [] as any[],
     startTime: undefined as undefined | string,
     endTime: undefined as undefined | string,
     address: undefined as undefined | string,
-    internal: [],
+    internal: [] as any,
     content: undefined as undefined | string,
     decision: undefined as undefined | string,
     external: undefined as undefined | string,
@@ -45,8 +49,9 @@ Page({
     this.setData({ visible: false })
   },
   async getDetail() {
+    const store = getStoreData()
     try {
-      if (!getStoreData().id) {
+      if (!store.id) {
         await wx.showModal({
           content: '暂无会议内容！',
           showCancel: false
@@ -54,52 +59,33 @@ Page({
 
         wx.exitMiniProgram()
         return
-      } else if (getStoreData().token) {
-        storeCommit('setLoading', { value: true })
+      } else {
+        wx.showLoading({ title: '加载中', mask: true })
 
-        const data: any = await Promise.allSettled([
-          Api.getMeetingDetail(getStoreData().id),
-          Api.getMeetingTagList(),
-          Api.getMeetingTypeList(),
-          Api.getUserList()
-        ])
-
-        const meeting = data[0].value.data
-        const tagList = data[1].value.data
-        const typeList = data[2].value.data
-        const userList = data[3].value.data
-
-        const category = typeList.find(
-          (item: any) => meeting.categoryId === item.id
-        )
+        const res = await Api.getMeetingDetail(store.id)
+        const meeting = res.data
 
         this.setData({
           title: meeting.theme,
-          type: category.name,
-          tags: tagList.filter((item: any) =>
+          type: app.getCategoryText(meeting.categoryId),
+          tags: store.tagList.filter((item: any) =>
             meeting.labelList.includes(item.id)
           ),
           startTime: meeting.startTime,
           endTime: meeting.startTime,
           address: meeting.address,
-          internal: (meeting.internalJoinerList ?? []).map((id: number) => {
-            const row = userList.find((item: any) => item.id === id)
-            return `${row.name}<${row.mobile}>`
-          }),
+          internal: app.getUserDetail(meeting.internalJoinerList ?? []),
+          moderator: app.getUserDetail(meeting.moderator),
+          recorder: app.getUserDetail(meeting.recorder),
+          carbonCopyList: app.getUserDetail(meeting.carbonCopyList ?? []),
           content: meeting.content,
           decision: meeting.decisionMatter,
           external: meeting.extJoiner,
           taskList: (meeting.meetingTaskList ?? []).map((item: any) => {
             return {
               ...item,
-              checkerList: (item.checkerList ?? []).map((id: number) => {
-                const row = userList.find((item: any) => item.id === id)
-                return `${row.name}<${row.mobile}>`
-              }),
-              headerList: (item.headerList ?? []).map((id: number) => {
-                const row = userList.find((item: any) => item.id === id)
-                return `${row.name}<${row.mobile}>`
-              })
+              checkerList: app.getUserDetail(item.checkerList ?? []),
+              headerList: app.getUserDetail(item.headerList ?? [])
             }
           }),
           remark: meeting.remark,
@@ -112,10 +98,11 @@ Page({
           status: 1
         })
       }
-    } catch (error) {
-      console.log('error :>> ', error)
+    } catch (error: any) {
+      const message = error?.message ?? error.msg ?? '未知错误'
+      wx.showModal({ content: message })
     } finally {
-      storeCommit('setLoading', { value: false })
+      wx.hideLoading({ noConflict: true })
     }
   },
   async confirmTask() {
@@ -134,14 +121,73 @@ Page({
 
         await this.getDetail()
       }
-    } catch (error) {
-      console.log('error :>> ', error)
+    } catch (error: any) {
+      const message = error?.message ?? error.msg ?? '未知错误'
+      wx.showModal({ content: message })
     } finally {
       storeCommit('setLoading', { value: false })
     }
   },
-  async onLoad() {
-    effect(this.getDetail)
+  async login() {
+    wx.showLoading({ title: '加载中', mask: true })
+    try {
+      const wxloginRes = await wxLogin()
+
+      const { data: loginData } = await Api.login({
+        code: wxloginRes.code,
+        appId: getStoreData().appId
+      })
+
+      if (!loginData.name) {
+        // 未登录
+        storeCommit('setLoginType', LOGIN_TYPE.NOT_REGISTRY)
+        wx.redirectTo({ url: PATH.LOGIN })
+      } else {
+        storeCommit('setUserInfo', loginData)
+        // 已登录
+        if (loginData.attentionMp) {
+          // 已授权
+          storeCommit('setLoginType', LOGIN_TYPE.READY)
+        } else {
+          // 已授权
+          storeCommit('setLoginType', LOGIN_TYPE.NOT_FOLLOW)
+          wx.redirectTo({ url: PATH.FOLLOW })
+        }
+      }
+      wx.hideLoading({ noConflict: true })
+    } catch (error: any) {
+      wx.hideLoading({ noConflict: true })
+      await wx.showModal({
+        content: error.message,
+        showCancel: false,
+        success() {
+          wx.exitMiniProgram()
+        }
+      })
+    }
+  },
+  async init() {
+    try {
+      await app.login()
+      // 未登陆成功
+      if (!getStoreData().token) {
+        return
+      }
+      await Promise.allSettled([
+        app.getMeetingTagList(),
+        app.getMeetingTypeList(),
+        app.getUserList()
+      ])
+
+      await this.getDetail()
+    } catch (error: any) {
+      wx.showModal({ content: error.message ?? error.msg, showCancel: false })
+    }
+  },
+  async onLoad(options: any) {
+    app.setMeetingId(options.id)
+
+    this.init()
   },
   // 下拉刷新时触发
   async onPullDownRefresh() {

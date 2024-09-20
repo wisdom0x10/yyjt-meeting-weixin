@@ -2,6 +2,8 @@
   "navigationBarTitleText": "",
   "usingComponents": {
     "dept-picker": "../../components/dept-picker/dept-picker",
-    "van-toast": "@vant/weapp/toast/index"
+    "van-toast": "@vant/weapp/toast/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-checkbox": "@vant/weapp/checkbox/index"
   }
 }

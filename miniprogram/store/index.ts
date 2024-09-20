@@ -15,7 +15,11 @@ export default new Store({
     loginType: LOGIN_TYPE.NOT_LOGIN,
     token: null,
 
-    id: Storage.get(CACHE.ID)
+    id: Storage.get(CACHE.ID),
+
+    userList: [],
+    tagList: [],
+    typeList: []
   },
   getters: {
     getAppId(data: { appid: string }) {
@@ -52,34 +56,18 @@ export default new Store({
         target.id = data
         Storage.set(CACHE.ID, data)
       }
+    },
+    setUserList(target: any, data: any) {
+      target.userList = data
+    },
+    setTagList(target: any, data: any) {
+      target.tagList = data
+    },
+    setTypeList(target: any, data: any) {
+      target.typeList = data
     }
   },
   actions: {
-    async login({ storeCommit }: any) {
-      storeCommit('setLoading', { value: true })
-      try {
-        const wxloginRes = await wxLogin()
-
-        const { data: loginData } = await Api.login({ code: wxloginRes.code })
-
-        if (!loginData.name) {
-          // 未登录
-          storeCommit('setLoginType', LOGIN_TYPE.NOT_REGISTRY)
-        } else {
-          storeCommit('setUserInfo', loginData)
-          // 已登录
-          if (loginData.attentionMp) {
-            // 已授权
-            storeCommit('setLoginType', LOGIN_TYPE.READY)
-          } else {
-            // 已授权
-            storeCommit('setLoginType', LOGIN_TYPE.NOT_FOLLOW)
-          }
-        }
-      } finally {
-        storeCommit('setLoading', { value: false })
-      }
-    },
     async register({ storeCommit }: any, data: any) {
       try {
         storeCommit('setLoading', { value: true })

@@ -5,21 +5,21 @@
     "compileHotReLoad": true,
     "urlCheck": false
   },
-  "libVersion": "3.5.4",
+  "libVersion": "3.5.5",
   "condition": {
     "miniprogram": {
       "list": [
         {
           "name": "pages/login/index",
           "pathName": "pages/login/index",
-          "query": "id=14",
+          "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "pages/detail/index",
           "pathName": "pages/detail/index",
-          "query": "id=28",
+          "query": "id=40",
           "launchMode": "default",
           "scene": null
         },

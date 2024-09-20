@@ -1,4 +1,4 @@
-import { BASE_URL } from '../configs/index'
+import { BASE_URL, BASE_URL_HTTP } from '../configs/index'
 import { getStoreData } from 'wxminishareddata'
 
 interface RequestOptions {
@@ -56,26 +56,23 @@ class Request {
 
   request<T = any>(options: RequestOptions): Promise<ResponseData<T>> {
     return new Promise(async (resolve, reject) => {
-      try {
-        const interceptedOptions = await this.applyRequestInterceptors(options)
-        wx.request({
-          ...interceptedOptions,
-          success: async (res) => {
-            let response: ResponseData<T> = res.data as any
-            response = await this.applyResponseInterceptors(response)
-            if (response.code === 20000) {
-              resolve(response)
-            } else {
-              reject(response)
-            }
-          },
-          fail: (err) => {
-            reject(err)
+      const interceptedOptions = await this.applyRequestInterceptors(options)
+      wx.request({
+        ...interceptedOptions,
+        success: async (res) => {
+          let response: ResponseData<T> = res.data as any
+          response = await this.applyResponseInterceptors(response)
+
+          if (response.code === 20000) {
+            resolve(response)
+          } else {
+            reject(response)
           }
-        })
-      } catch (err) {
-        reject(err)
-      }
+        },
+        fail: (err) => {
+          reject(err)
+        }
+      })
     })
   }
 }

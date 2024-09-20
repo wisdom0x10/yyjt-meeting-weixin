@@ -14,7 +14,11 @@ export interface UserType {
   username: null | string
 }
 
-export const login = (data: { code: string }) => {
+export const login = (data: {
+  code: string
+  appId: string
+  phoneCode?: string
+}) => {
   return httpClient.request<UserType>({
     method: 'POST',
     url: '/wx/ma/login',
