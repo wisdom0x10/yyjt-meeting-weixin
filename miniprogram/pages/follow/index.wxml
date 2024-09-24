@@ -1,19 +1,18 @@
-<view style="padding: 25rpx">
-  <block>
-    <van-image
-      width="700rpx"
-      height="700rpx"
-      src="/static/qr.jpg"
-      show-menu-by-longpress
-    />
-    <view style="display: flex; flex-direction: column; gap: 20rpx">
-      <view>1. 长按图片关注公众号</view>
-      <view>2. 点击刷新按钮</view>
-      <view style="color: #999; font-size: 12px">
-        如果已关注公众号、刷新后仍停留在该页面，请先取消关注公众号，再重复步骤1、步骤2
-      </view>
-
-      <van-button type="primary" block bind:click="refresh"> 刷新 </van-button>
+<view style="padding: 32px">
+  <van-image
+    width="100%"
+    height="700rpx"
+    fit="contain"
+    src="/static/qr.jpg"
+    show-menu-by-longpress
+  />
+  <view style="display: flex; flex-direction: column; gap: 20rpx">
+    <view>1. 长按图片关注公众号</view>
+    <view>2. 点击刷新按钮</view>
+    <view style="color: #999; font-size: 12px">
+      如果已关注公众号、刷新后仍停留在该页面，请先取消关注公众号，再重复步骤1、步骤2
     </view>
-  </block>
+
+    <van-button type="primary" block bind:click="refresh"> 刷新 </van-button>
+  </view>
 </view>

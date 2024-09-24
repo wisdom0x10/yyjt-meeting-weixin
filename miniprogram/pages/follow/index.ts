@@ -1,14 +1,18 @@
+const app = getApp<IAppOption>()
+
 Page({
   data: {
     appid: null as null | string,
     src: null as null | string
   },
   async refresh() {
-    const app = getApp<IAppOption>()
-    await app.login()
+    await app.login(undefined, true)
   },
-  async onLoad() {
-    const app = getApp<IAppOption>()
-    await app.login()
+  onShow() {
+    wx.hideHomeButton()
+    this.refresh()
+  },
+  onPullDownRefresh() {
+    this.refresh()
   }
 })

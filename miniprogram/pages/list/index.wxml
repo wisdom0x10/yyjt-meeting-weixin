@@ -1,0 +1,28 @@
+<van-search
+  value="{{ theme }}"
+  placeholder="请输入搜索关键词"
+  show-action
+  clearable="{{ false }}"
+  bind:search="handleSearch"
+  bind:cancel="handleSearch"
+/>
+
+<van-swipe-cell
+  right-width="{{ 65 }}"
+  left-width="{{ 65 }}"
+  wx:for="{{ list }}"
+  wx:key="index"
+  disabled
+>
+  <van-cell-group>
+    <van-cell
+      title="{{ item.theme }}"
+      use-label-slot
+      border="{{ true }}"
+      data-id="{{ item.id }}"
+      bind:click="handleToDetail"
+    >
+      <view slot="label">{{ item.startTime }} - {{ item.endTime }}</view>
+    </van-cell>
+  </van-cell-group>
+</van-swipe-cell>

@@ -1,8 +1,6 @@
 import { themeMixin } from '../../behaviors/theme'
 import * as Api from '../../api/index'
-import { getStoreData, storeCommit } from 'wxminishareddata'
-import { wxLogin } from '../../utils/promise'
-import { LOGIN_TYPE, PATH } from '../../enums/index'
+import { getStoreData } from 'wxminishareddata'
 
 const app = getApp<IAppOption>()
 
@@ -48,57 +46,43 @@ Page({
   handleClose() {
     this.setData({ visible: false })
   },
-  async getDetail() {
-    const store = getStoreData()
+  async refresh() {
     try {
-      if (!store.id) {
-        await wx.showModal({
-          content: '暂无会议内容！',
-          showCancel: false
-        })
+      wx.showLoading({ title: '加载中', mask: true })
 
-        wx.exitMiniProgram()
-        return
-      } else {
-        wx.showLoading({ title: '加载中', mask: true })
+      const store = getStoreData()
 
-        const res = await Api.getMeetingDetail(store.id)
-        const meeting = res.data
+      const res = await Api.getMeetingDetail(this.data.id!)
+      const meeting = res.data
 
-        this.setData({
-          title: meeting.theme,
-          type: app.getCategoryText(meeting.categoryId),
-          tags: store.tagList.filter((item: any) =>
-            meeting.labelList.includes(item.id)
-          ),
-          startTime: meeting.startTime,
-          endTime: meeting.startTime,
-          address: meeting.address,
-          internal: app.getUserDetail(meeting.internalJoinerList ?? []),
-          moderator: app.getUserDetail(meeting.moderator),
-          recorder: app.getUserDetail(meeting.recorder),
-          carbonCopyList: app.getUserDetail(meeting.carbonCopyList ?? []),
-          content: meeting.content,
-          decision: meeting.decisionMatter,
-          external: meeting.extJoiner,
-          taskList: (meeting.meetingTaskList ?? []).map((item: any) => {
-            return {
-              ...item,
-              checkerList: app.getUserDetail(item.checkerList ?? []),
-              headerList: app.getUserDetail(item.headerList ?? [])
-            }
-          }),
-          remark: meeting.remark,
-          showButton: !meeting.unConfirmTask
-        })
-
-        Api.changeTaskStatus({
-          meetingId: getStoreData().id,
-          type: 0,
-          status: 1
-        })
-      }
+      this.setData({
+        title: meeting.theme,
+        type: app.getCategoryText(meeting.categoryId),
+        tags: store.tagList.filter((item: any) =>
+          meeting.labelList.includes(item.id)
+        ),
+        startTime: meeting.startTime,
+        endTime: meeting.startTime,
+        address: meeting.address,
+        internal: app.getUserText(meeting.internalJoinerList ?? []),
+        moderator: app.getUserText(meeting.moderator),
+        recorder: app.getUserText(meeting.recorder),
+        carbonCopyList: app.getUserText(meeting.carbonCopyList ?? []),
+        content: meeting.content,
+        decision: meeting.decisionMatter,
+        external: meeting.extJoiner,
+        taskList: (meeting.meetingTaskList ?? []).map((item: any) => {
+          return {
+            ...item,
+            checkerList: app.getUserText(item.checkerList ?? []),
+            headerList: app.getUserText(item.headerList ?? [])
+          }
+        }),
+        remark: meeting.remark,
+        showButton: !meeting.unConfirmTask
+      })
     } catch (error: any) {
+      console.log('error :>> ', error)
       const message = error?.message ?? error.msg ?? '未知错误'
       wx.showModal({ content: message })
     } finally {
@@ -112,86 +96,46 @@ Page({
       })
 
       if (confirm) {
-        storeCommit('setLoading', { value: true })
+        wx.showLoading({ title: '加载中', mask: true })
         await Api.changeTaskStatus({
-          meetingId: getStoreData().id,
+          meetingId: Number(this.data.id),
           type: 0,
           status: 2
         })
 
-        await this.getDetail()
+        await this.refresh()
       }
     } catch (error: any) {
       const message = error?.message ?? error.msg ?? '未知错误'
       wx.showModal({ content: message })
     } finally {
-      storeCommit('setLoading', { value: false })
-    }
-  },
-  async login() {
-    wx.showLoading({ title: '加载中', mask: true })
-    try {
-      const wxloginRes = await wxLogin()
-
-      const { data: loginData } = await Api.login({
-        code: wxloginRes.code,
-        appId: getStoreData().appId
-      })
-
-      if (!loginData.name) {
-        // 未登录
-        storeCommit('setLoginType', LOGIN_TYPE.NOT_REGISTRY)
-        wx.redirectTo({ url: PATH.LOGIN })
-      } else {
-        storeCommit('setUserInfo', loginData)
-        // 已登录
-        if (loginData.attentionMp) {
-          // 已授权
-          storeCommit('setLoginType', LOGIN_TYPE.READY)
-        } else {
-          // 已授权
-          storeCommit('setLoginType', LOGIN_TYPE.NOT_FOLLOW)
-          wx.redirectTo({ url: PATH.FOLLOW })
-        }
-      }
       wx.hideLoading({ noConflict: true })
-    } catch (error: any) {
-      wx.hideLoading({ noConflict: true })
-      await wx.showModal({
-        content: error.message,
-        showCancel: false,
-        success() {
-          wx.exitMiniProgram()
-        }
+    }
+  },
+  onLoad(options: any) {
+    this.setData({ id: options.id })
+  },
+  async onShow() {
+    await app.login()
+
+    if (!getStoreData().token) return
+
+    await Promise.allSettled([
+      app.getTagList(),
+      app.getTypeList(),
+      app.getUserList(),
+      Api.changeTaskStatus({
+        meetingId: Number(this.data.id),
+        type: 0,
+        status: 1
       })
-    }
-  },
-  async init() {
-    try {
-      await app.login()
-      // 未登陆成功
-      if (!getStoreData().token) {
-        return
-      }
-      await Promise.allSettled([
-        app.getMeetingTagList(),
-        app.getMeetingTypeList(),
-        app.getUserList()
-      ])
+    ])
 
-      await this.getDetail()
-    } catch (error: any) {
-      wx.showModal({ content: error.message ?? error.msg, showCancel: false })
-    }
-  },
-  async onLoad(options: any) {
-    app.setMeetingId(options.id)
-
-    this.init()
+    this.refresh()
   },
   // 下拉刷新时触发
   async onPullDownRefresh() {
-    await this.getDetail()
+    await this.refresh()
     wx.stopPullDownRefresh()
   }
 })

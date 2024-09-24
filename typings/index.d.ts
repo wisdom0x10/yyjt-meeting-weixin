@@ -2,11 +2,10 @@
 
 interface IAppOption {
   userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback
-  getMeetingTagList: () => Promise<void>
-  getMeetingTypeList: () => Promise<void>
+  getTagList: () => Promise<void>
+  getTypeList: () => Promise<void>
   getUserList: () => Promise<void>
-  login: (phoneCode?: string) => Promise<void>
-  setMeetingId: (id?: number) => void
-  getUserDetail: (id?: number | number[]) => string | string[]
+  login: (phoneCode?: string, force?: boolean) => Promise<void>
+  getUserText: (id?: number | number[]) => string | string[]
   getCategoryText: (id: number) => string
 }

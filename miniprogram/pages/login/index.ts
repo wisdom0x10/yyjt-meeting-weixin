@@ -23,7 +23,8 @@ Page({
   handleOpenPrivacyContract() {
     wx.openPrivacyContract({})
   },
-  async onLoad() {
+  async onShow() {
+    wx.hideHomeButton()
     await app.login()
   }
 })

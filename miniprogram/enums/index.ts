@@ -16,5 +16,7 @@ export enum LOGIN_TYPE {
 export enum PATH {
   LOGIN = '/pages/login/index',
   DETAIL = '/pages/detail/index',
-  FOLLOW = '/pages/follow/index'
+  FOLLOW = '/pages/follow/index',
+  SIGNIN = '/pages/signin/index',
+  LIST = '/pages/list/index'
 }

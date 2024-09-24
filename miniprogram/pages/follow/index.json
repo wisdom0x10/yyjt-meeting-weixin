@@ -1,7 +1,8 @@
 {
-  "navigationBarTitleText": "",
+  "navigationBarTitleText": "关注公众号",
   "usingComponents": {
-    "van-image": "@vant/weapp/image/index"
+    "van-image": "@vant/weapp/image/index",
+    "van-button": "@vant/weapp/button/index"
   },
   "enablePullDownRefresh": true
 }

@@ -1,6 +1,12 @@
 {
+  "navigationBarTitleText": "会议详情",
   "usingComponents": {
-    "task-list": "../../components/task-list/task-list"
+    "task-list": "../../components/task-list/task-list",
+    "van-button": "@vant/weapp/button/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "mp-html": "mp-html"
   },
   "enablePullDownRefresh": true
 }

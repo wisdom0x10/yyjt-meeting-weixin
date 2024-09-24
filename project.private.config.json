@@ -10,16 +10,30 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/login/index",
-          "pathName": "pages/login/index",
+          "name": "pages/detail/index",
+          "pathName": "pages/detail/index",
+          "query": "id=114",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "sign",
+          "pathName": "pages/signin/index",
+          "query": "id=68",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/list/index",
+          "pathName": "pages/list/index",
           "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
-          "name": "pages/detail/index",
-          "pathName": "pages/detail/index",
-          "query": "id=40",
+          "name": "pages/login/index",
+          "pathName": "pages/login/index",
+          "query": "",
           "launchMode": "default",
           "scene": null
         },

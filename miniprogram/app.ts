@@ -6,26 +6,18 @@ import { LOGIN_TYPE, PATH } from './enums/index'
 import { getCurrentPath } from './utils/common'
 
 App<IAppOption>({
-  async onLaunch(options) {
-    this.setMeetingId(options.query.id)
-  },
-  setMeetingId(id?: number) {
-    if (id) {
-      storeCommit('setId', id)
-    }
-  },
-  async getMeetingTagList() {
+  async getTagList() {
     try {
-      const res = await Api.getMeetingTagList()
+      const res = await Api.getTagList()
       storeCommit('setTagList', res.data)
     } catch (error: any) {
       const message = error?.message ?? error.msg ?? '未知错误'
       wx.showModal({ content: message })
     }
   },
-  async getMeetingTypeList() {
+  async getTypeList() {
     try {
-      const res = await Api.getMeetingTypeList()
+      const res = await Api.getTypeList()
       storeCommit('setTypeList', res.data)
     } catch (error: any) {
       const message = error?.message ?? error.msg ?? '未知错误'
@@ -41,9 +33,12 @@ App<IAppOption>({
       wx.showModal({ content: message })
     }
   },
-  async login(phoneCode?: string) {
-    wx.showLoading({ title: '加载中', mask: true })
+  async login(phoneCode?: string, force = false) {
     try {
+      if (getStoreData().token && !force) {
+        return
+      }
+      wx.showLoading({ title: '加载中', mask: true })
       const wxLoginRes = await wxLogin()
 
       const { data: loginData } = await Api.login({
@@ -53,35 +48,32 @@ App<IAppOption>({
       })
 
       const currentPath = getCurrentPath()
+      console.log('loginData :>> ', loginData)
+      console.log('currentPath :>> ', currentPath)
+      storeCommit('setUserInfo', loginData)
       if (!loginData.name) {
         // 未登录
         storeCommit('setLoginType', LOGIN_TYPE.NOT_REGISTRY)
-
         if (currentPath !== PATH.LOGIN) {
-          wx.redirectTo({ url: PATH.LOGIN })
+          await wx.redirectTo({ url: PATH.LOGIN })
         }
       } else {
-        storeCommit('setUserInfo', loginData)
         // 已登录
         if (loginData.attentionMp) {
-          // 已授权
+          // 已授权公众号
           storeCommit('setLoginType', LOGIN_TYPE.READY)
-
-          if (currentPath !== PATH.DETAIL) {
-            wx.redirectTo({ url: PATH.DETAIL })
+          if ([PATH.FOLLOW, PATH.LOGIN].includes(currentPath as PATH)) {
+            await wx.redirectTo({ url: PATH.LIST })
           }
         } else {
-          // 已授权
+          // 未授权公众号
           storeCommit('setLoginType', LOGIN_TYPE.NOT_FOLLOW)
-
           if (currentPath !== PATH.FOLLOW) {
-            wx.redirectTo({ url: PATH.FOLLOW })
+            await wx.redirectTo({ url: PATH.FOLLOW })
           }
         }
       }
-      wx.hideLoading({ noConflict: true })
     } catch (error: any) {
-      wx.hideLoading({ noConflict: true })
       await wx.showModal({
         content: error.message,
         showCancel: false,
@@ -89,27 +81,26 @@ App<IAppOption>({
           wx.exitMiniProgram()
         }
       })
+    } finally {
+      wx.hideLoading()
     }
   },
-  getUserDetail(id?: number | number[]) {
+  getUserText(id?: number | number[]) {
     if (!id) {
       return ''
     }
 
     const userList = getStoreData().userList
 
-    const getUserDetailById = (id: number) => {
+    const getUserTextById = (id: number) => {
       const row = userList.find((item: any) => item.id === id)
-      if (row) {
-        return `${row.name}<${row.mobile}>`
-      } else {
-        return ''
-      }
+
+      return row ? `${row.name}<${row.mobile}>` : ''
     }
     if (typeof id === 'number') {
-      return getUserDetailById(id)
+      return getUserTextById(id)
     } else {
-      return id.map((id) => getUserDetailById(id))
+      return id.map((id) => getUserTextById(id))
     }
   },
   getCategoryText(id: number) {
@@ -117,10 +108,6 @@ App<IAppOption>({
 
     const row = typeList.find((item: any) => item.id === id)
 
-    if (row) {
-      return row.name
-    } else {
-      return ''
-    }
+    return row ? row.name : ''
   }
 })

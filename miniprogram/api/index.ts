@@ -1,5 +1,10 @@
 import { httpClient } from '../utils/request'
 
+export interface Page {
+  page: number
+  size: number
+}
+
 export interface UserType {
   attentionMp: boolean
   avatar: null | string
@@ -53,11 +58,11 @@ export const getMeetingDetail = (id: string) => {
   return httpClient.request({ url: `/meeting/${id}`, method: 'GET' })
 }
 
-export const getMeetingTagList = () => {
+export const getTagList = () => {
   return httpClient.request({ url: `/meeting/label/simpleList`, method: 'GET' })
 }
 
-export const getMeetingTypeList = () => {
+export const getTypeList = () => {
   return httpClient.request({
     url: `/meeting/category/simpleList`,
     method: 'GET'
@@ -78,6 +83,22 @@ export const changeTaskStatus = (data: {
 }) => {
   return httpClient.request({
     url: '/meeting/task/status',
+    method: 'POST',
+    data
+  })
+}
+
+export const getMeetingPage = (data: Page | { theme?: string }) => {
+  return httpClient.request<{ list: any[]; total: number }>({
+    url: `/meeting/page`,
+    method: 'GET',
+    data
+  })
+}
+
+export const signIn = (data: { meetingId: number }) => {
+  return httpClient.request<{ list: any[]; total: number }>({
+    url: `/meeting/sign`,
     method: 'POST',
     data
   })

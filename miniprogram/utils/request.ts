@@ -1,5 +1,6 @@
-import { BASE_URL, BASE_URL_HTTP } from '../configs/index'
+import { BASE_URL } from '../configs/index'
 import { getStoreData } from 'wxminishareddata'
+import { getCurrentPathWithQuery } from './common'
 
 interface RequestOptions {
   url: string // 请求的 URL，必填项
@@ -65,6 +66,20 @@ class Request {
 
           if (response.code === 20000) {
             resolve(response)
+          } else if (
+            response.code === 225006 ||
+            response.code === 225005 ||
+            response.code === 225007 ||
+            response.code === 225010
+          ) {
+            const path = getCurrentPathWithQuery()
+            await wx.showModal({
+              content: '登陆状态失效',
+              showCancel: false,
+              success() {
+                wx.restartMiniProgram({ path })
+              }
+            })
           } else {
             reject(response)
           }
@@ -80,22 +95,39 @@ class Request {
 export const httpClient = new Request()
 
 httpClient.addRequestInterceptor((options) => {
+  options.url = BASE_URL + options.url
+
+  return options
+})
+
+// Token
+httpClient.addRequestInterceptor((options) => {
   const token = getStoreData().token
 
-  const $options = {
-    ...options,
-    url: BASE_URL + options.url
+  if (!token) return options
+
+  if (options.header) {
+    options.header['Authorization'] = token
+  } else {
+    options.header = {
+      Authorization: token
+    }
   }
 
-  if (token) {
-    if ($options.header) {
-      $options.header['Authorization'] = token
-    } else {
-      $options.header = {
-        Authorization: token
+  return options
+})
+
+// 移除undefined
+httpClient.addRequestInterceptor((options) => {
+  if (options.data) {
+    const keys = Object.keys(options.data)
+
+    for (let key of keys) {
+      if (options.data[key] === undefined) {
+        delete options.data[key]
       }
     }
   }
 
-  return $options
+  return options
 })

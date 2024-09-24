@@ -1,26 +1,17 @@
 {
-  "pages": ["pages/login/index", "pages/detail/index", "pages/follow/index"],
+  "pages": [
+    "pages/list/index",
+    "pages/login/index",
+    "pages/detail/index",
+    "pages/follow/index",
+    "pages/signin/index"
+  ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "会议纪要管理",
+    "navigationBarTitleText": "会议管理系统",
     "navigationBarBackgroundColor": "#ffffff"
   },
   "componentFramework": "glass-easel",
   "lazyCodeLoading": "requiredComponents",
-  "usingComponents": {
-    "mp-html": "mp-html",
-    "van-image": "@vant/weapp/image/index",
-    "van-button": "@vant/weapp/button/index",
-    "van-row": "@vant/weapp/row/index",
-    "van-col": "@vant/weapp/col/index",
-    "van-config-provider": "@vant/weapp/config-provider/index",
-    "van-popup": "@vant/weapp/popup/index",
-    "van-cell": "@vant/weapp/cell/index",
-    "van-cell-group": "@vant/weapp/cell-group/index",
-    "van-tag": "@vant/weapp/tag/index",
-    "van-collapse": "@vant/weapp/collapse/index",
-    "van-collapse-item": "@vant/weapp/collapse-item/index",
-    "van-field": "@vant/weapp/field/index",
-    "van-picker": "@vant/weapp/picker/index"
-  }
+  "usingComponents": {}
 }
