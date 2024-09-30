@@ -16,13 +16,43 @@
 >
   <van-cell-group>
     <van-cell
-      title="{{ item.theme }}"
+      title=""
       use-label-slot
       border="{{ true }}"
       data-id="{{ item.id }}"
       bind:click="handleToDetail"
     >
-      <view slot="label">{{ item.startTime }} - {{ item.endTime }}</view>
+      <view slot="title" style="display: flex; justify-content: space-between">
+        <view style="display: flex; gap: 5px; flex: 1">
+          <view style="overflow: hidden; white-space: nowrap">
+            {{ item.theme }}
+          </view>
+          <van-tag
+            type="primary"
+            wx:if="{{ item.statusValue === -1 }}"
+            style="flex-shrink: 0"
+          >
+            预约会议
+          </van-tag>
+        </view>
+        <view style="width: 50px; text-align: center; flex-shrink: 0">
+          {{ item.categoryText }}
+        </view>
+      </view>
+      <view slot="label">
+        <view style="display: flex; gap: 5px; flex-wrap: wrap">
+          <van-tag
+            wx:for="{{ item.labelList }}"
+            wx:for-item="label"
+            wx:key="index"
+            text-color="{{ label.color }}"
+            color="{{ label.backgroundColor }}"
+          >
+            {{ label.name }}
+          </van-tag>
+        </view>
+        <view>{{ item.startTime }} - {{ item.endTime }}</view>
+      </view>
     </van-cell>
   </van-cell-group>
 </van-swipe-cell>

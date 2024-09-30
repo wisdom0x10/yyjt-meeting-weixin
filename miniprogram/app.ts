@@ -6,7 +6,8 @@ import { LOGIN_TYPE, PATH } from './enums/index'
 import { getCurrentPath } from './utils/common'
 
 App<IAppOption>({
-  async getTagList() {
+  async getTagList(force = false) {
+    if (!force && getStoreData().tagList.length !== 0) return
     try {
       const res = await Api.getTagList()
       storeCommit('setTagList', res.data)
@@ -15,7 +16,8 @@ App<IAppOption>({
       wx.showModal({ content: message })
     }
   },
-  async getTypeList() {
+  async getTypeList(force = false) {
+    if (!force && getStoreData().typeList.length !== 0) return
     try {
       const res = await Api.getTypeList()
       storeCommit('setTypeList', res.data)
@@ -24,7 +26,8 @@ App<IAppOption>({
       wx.showModal({ content: message })
     }
   },
-  async getUserList() {
+  async getUserList(force = false) {
+    if (!force && getStoreData().userList.length !== 0) return
     try {
       const res = await Api.getUserList()
       storeCommit('setUserList', res.data)
@@ -95,7 +98,7 @@ App<IAppOption>({
     const getUserTextById = (id: number) => {
       const row = userList.find((item: any) => item.id === id)
 
-      return row ? `${row.name}<${row.mobile}>` : ''
+      return row ? `${row.nickname}<${row.name}>` : ''
     }
     if (typeof id === 'number') {
       return getUserTextById(id)

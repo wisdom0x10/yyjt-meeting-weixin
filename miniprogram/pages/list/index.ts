@@ -41,13 +41,23 @@ Page({
         size: this.data.size,
         theme: this.data.theme
       })
-      const list = force
-        ? response.data.list
-        : [...this.data.list, ...response.data.list]
+
+      const responseList = response.data.list.map((item) => {
+        return {
+          ...item,
+          categoryText: app.getCategoryText(item.categoryId),
+          labelList: item.labelList.map((id: number) => {
+            return getStoreData().tagList.find(
+              (typeItem: any) => typeItem.id === id
+            )
+          })
+        }
+      })
+      const list = force ? responseList : [...this.data.list, ...responseList]
 
       this.setData({ list, total: response.data.total })
-    } catch (error) {
-      console.log('error :>> ', error)
+    } catch (error: any) {
+      wx.showModal({ title: error.message ?? '未知错误', showCancel: false })
     } finally {
       loading && wx.hideLoading({ noConflict: true })
     }
@@ -58,6 +68,8 @@ Page({
     wx.navigateTo({ url: `${PATH.DETAIL}?id=${id}` })
   },
   async onPullDownRefresh() {
+    await Promise.all([app.getTypeList(true), app.getTagList(true)])
+
     await this.refresh({ force: true, loading: false })
 
     wx.stopPullDownRefresh()
@@ -69,6 +81,8 @@ Page({
     await app.login()
 
     if (!getStoreData().token) return
+
+    await Promise.all([app.getTypeList(), app.getTagList()])
 
     this.refresh({ force: true })
   }

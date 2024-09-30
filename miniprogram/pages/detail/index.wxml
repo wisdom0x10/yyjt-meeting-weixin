@@ -11,52 +11,33 @@
       {{ item.name }}
     </van-tag>
   </van-cell>
-  <van-cell title-width="200rpx" title="开始时间" value="{{ startTime }}" />
-  <van-cell title-width="200rpx" title="结束时间" value="{{ endTime }}" />
-  <van-cell title-width="200rpx" title="会议地点" value="{{ address }}" />
   <van-cell
     title-width="200rpx"
-    title="参会人员(内部)"
-    value-class="flex-right"
-  >
-    <van-tag color="#333" wx:for="{{ internal }}" wx:key="index">
-      {{ item }}
-    </van-tag>
-  </van-cell>
-  <van-cell title-width="200rpx" title="会议主持人" value-class="flex-right">
-    <van-tag color="#333">
-      {{ moderator }}
-    </van-tag>
-  </van-cell>
-  <van-cell title-width="200rpx" title="会议记录人" value-class="flex-right">
-    <van-tag color="#333">
-      {{ recorder }}
-    </van-tag>
-  </van-cell>
-  <van-cell title-width="200rpx" title="抄送人" value-class="flex-right">
-    <van-tag color="#333" wx:for="{{ carbonCopyList }}" wx:key="index">
-      {{ item }}
-    </van-tag>
-  </van-cell>
+    title="签到开始时间"
+    wx:if="{{ isPreMeeting }}"
+    value="{{ planStartTime }}"
+  />
   <van-cell
     title-width="200rpx"
-    title="参会人员(外部)"
-    value="{{ external }}"
+    title="签到结束时间"
+    wx:if="{{ isPreMeeting }}"
+    value="{{ planEndTime }}"
   />
   <van-cell
     title-width="200rpx"
     title="会议内容"
-    value="查看详情"
-    is-link
     data-mode="content"
-    bind:click="handleOpen"
-  />
+    wx:if="{{ !isPreMeeting }}"
+  >
+    <mp-html content="{{ content }}" />
+  </van-cell>
   <van-cell
     title-width="200rpx"
     title="决策事项"
     value="查看详情"
     is-link
     data-mode="decision"
+    wx:if="{{ !isPreMeeting }}"
     bind:click="handleOpen"
   />
   <van-cell
@@ -65,10 +46,24 @@
     value="查看详情"
     is-link
     data-mode="task"
+    wx:if="{{ !isPreMeeting }}"
     bind:click="handleOpen"
   />
-  <van-cell title-width="200rpx" title="备注" value="{{ remark }}" />
-  <view style="margin: 10rpx" wx:if="{{ showButton }}">
+  <van-cell
+    title-width="200rpx"
+    title="备注"
+    value="{{ remark }}"
+    wx:if="{{ !isPreMeeting }}"
+  />
+  <van-cell
+    title-width="200rpx"
+    title="其他"
+    value="查看详情"
+    is-link
+    data-mode="others"
+    bind:click="handleOpen"
+  />
+  <view style="margin: 10rpx" wx:if="{{ showButton && !isPreMeeting }}">
     <van-button type="primary" bind:click="confirmTask" block>
       确认任务
     </van-button>
@@ -98,6 +93,55 @@
       <view class="detail_title"> 任务分配 </view>
       <scroll-view class="detail_scroll" scroll-y>
         <task-list data="{{ taskList }}" expandAll />
+      </scroll-view>
+    </block>
+    <block wx:elif="{{ mode === 'others' }}">
+      <view class="detail_title"> 任务分配 </view>
+      <scroll-view class="detail_scroll" scroll-y>
+        <van-cell
+          title-width="200rpx"
+          title="开始时间"
+          value="{{ startTime }}"
+        />
+        <van-cell title-width="200rpx" title="结束时间" value="{{ endTime }}" />
+        <van-cell title-width="200rpx" title="会议地点" value="{{ address }}" />
+        <van-cell
+          title-width="200rpx"
+          title="参会人员(内部)"
+          value-class="flex-right"
+        >
+          <van-tag color="#333" wx:for="{{ internal }}" wx:key="index">
+            {{ item }}
+          </van-tag>
+        </van-cell>
+        <van-cell
+          title-width="200rpx"
+          title="会议主持人"
+          value-class="flex-right"
+        >
+          <van-tag color="#333">
+            {{ moderator }}
+          </van-tag>
+        </van-cell>
+        <van-cell
+          title-width="200rpx"
+          title="会议记录人"
+          value-class="flex-right"
+        >
+          <van-tag color="#333">
+            {{ recorder }}
+          </van-tag>
+        </van-cell>
+        <van-cell title-width="200rpx" title="抄送人" value-class="flex-right">
+          <van-tag color="#333" wx:for="{{ carbonCopyList }}" wx:key="index">
+            {{ item }}
+          </van-tag>
+        </van-cell>
+        <van-cell
+          title-width="200rpx"
+          title="参会人员(外部)"
+          value="{{ external }}"
+        />
       </scroll-view>
     </block>
   </van-popup>

@@ -11,6 +11,8 @@ Page({
     title: undefined as undefined | string,
     type: undefined as undefined | string,
     tags: [] as any[],
+    planStartTime: undefined as undefined | string,
+    planEndTime: undefined as undefined | string,
     startTime: undefined as undefined | string,
     endTime: undefined as undefined | string,
     address: undefined as undefined | string,
@@ -22,26 +24,19 @@ Page({
     remark: undefined as undefined | string,
     showButton: false,
 
+    isPreMeeting: false,
+
     visible: false,
-    mode: 'content'
+    mode: 'content',
+
+    activeNames: []
   },
   handleOpen(event: any) {
     const {
       target: { dataset }
     } = event
 
-    switch (dataset.mode) {
-      case 'content':
-        this.setData({ visible: true, mode: 'content' })
-        break
-      case 'decision':
-        this.setData({ visible: true, mode: 'decision' })
-        break
-      case 'task':
-        this.setData({ visible: true, mode: 'task' })
-        break
-      default:
-    }
+    this.setData({ visible: true, mode: dataset.mode })
   },
   handleClose() {
     this.setData({ visible: false })
@@ -61,6 +56,8 @@ Page({
         tags: store.tagList.filter((item: any) =>
           meeting.labelList.includes(item.id)
         ),
+        planStartTime: meeting.planStartTime,
+        planEndTime: meeting.planEndTime,
         startTime: meeting.startTime,
         endTime: meeting.startTime,
         address: meeting.address,
@@ -68,7 +65,7 @@ Page({
         moderator: app.getUserText(meeting.moderator),
         recorder: app.getUserText(meeting.recorder),
         carbonCopyList: app.getUserText(meeting.carbonCopyList ?? []),
-        content: meeting.content,
+        content: this.formateContent(meeting.content),
         decision: meeting.decisionMatter,
         external: meeting.extJoiner,
         taskList: (meeting.meetingTaskList ?? []).map((item: any) => {
@@ -79,8 +76,10 @@ Page({
           }
         }),
         remark: meeting.remark,
-        showButton: !meeting.unConfirmTask
+        showButton: !meeting.unConfirmTask,
+        isPreMeeting: meeting.statusValue === -1
       })
+      console.log('this :>> ', this)
     } catch (error: any) {
       console.log('error :>> ', error)
       const message = error?.message ?? error.msg ?? '未知错误'
@@ -88,6 +87,14 @@ Page({
     } finally {
       wx.hideLoading({ noConflict: true })
     }
+  },
+  formateContent(content: string) {
+    if (!content) return content
+    let result = content
+    while (result.endsWith('<p><br></p>')) {
+      result = result.slice(0, -11)
+    }
+    return result
   },
   async confirmTask() {
     try {
@@ -132,6 +139,9 @@ Page({
     ])
 
     this.refresh()
+  },
+  onChange(event: any) {
+    this.setData({ activeNames: event.detail })
   },
   // 下拉刷新时触发
   async onPullDownRefresh() {
