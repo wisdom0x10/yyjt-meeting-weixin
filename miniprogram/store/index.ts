@@ -24,8 +24,6 @@ export default new Store({
       target.loginType = data
     },
     setUserInfo(target: any, data: Api.UserType) {
-      console.log('data :>> ', data)
-      console.log('target :>> ', target)
       if (data.tokenPrefix && data.tokenValue) {
         target.token = `${data.tokenPrefix} ${data.tokenValue}`
       } else {

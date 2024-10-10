@@ -8,3 +8,10 @@
 .task-item-wrap {
   word-break: break-all;
 }
+
+.flex-right {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10rpx;
+  flex-wrap: wrap;
+}

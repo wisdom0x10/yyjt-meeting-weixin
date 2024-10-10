@@ -25,18 +25,20 @@
   />
   <van-cell
     title-width="200rpx"
-    title="会议内容"
-    data-mode="content"
+    title="决策事项"
+    data-mode="decision"
     wx:if="{{ !isPreMeeting }}"
   >
-    <mp-html content="{{ content }}" />
   </van-cell>
+  <view style="padding: 10px 16px; font-size: 12px">
+    <mp-html content="{{ decision }}" slot="label" />
+  </view>
   <van-cell
     title-width="200rpx"
-    title="决策事项"
+    title="会议内容"
     value="查看详情"
     is-link
-    data-mode="decision"
+    data-mode="content"
     wx:if="{{ !isPreMeeting }}"
     bind:click="handleOpen"
   />

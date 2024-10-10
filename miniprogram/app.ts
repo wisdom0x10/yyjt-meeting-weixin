@@ -51,8 +51,6 @@ App<IAppOption>({
       })
 
       const currentPath = getCurrentPath()
-      console.log('loginData :>> ', loginData)
-      console.log('currentPath :>> ', currentPath)
       storeCommit('setUserInfo', loginData)
       if (!loginData.name) {
         // 未登录
@@ -78,7 +76,7 @@ App<IAppOption>({
       }
     } catch (error: any) {
       await wx.showModal({
-        content: error.message,
+        content: error.message ?? error.errMsg ?? '未知错误',
         showCancel: false,
         success() {
           wx.exitMiniProgram()

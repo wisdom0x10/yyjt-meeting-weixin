@@ -130,15 +130,18 @@ Page({
     await Promise.allSettled([
       app.getTagList(),
       app.getTypeList(),
-      app.getUserList(),
+      app.getUserList()
+    ])
+
+    await this.refresh()
+
+    if (this.data.showButton) {
       Api.changeTaskStatus({
         meetingId: Number(this.data.id),
         type: 0,
         status: 1
       })
-    ])
-
-    this.refresh()
+    }
   },
   onChange(event: any) {
     this.setData({ activeNames: event.detail })
