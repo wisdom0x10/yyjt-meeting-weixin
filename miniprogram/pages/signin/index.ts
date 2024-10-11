@@ -8,8 +8,10 @@ Page({
     id: undefined as undefined | number
   },
   async onLoad(options) {
-    if (options.id) {
+    if (options.id && !isNaN(Number(options.id))) {
       this.setData({ id: Number(options.id) })
+    } else if (options.scene && !isNaN(Number(options.scene))) {
+      this.setData({ id: Number(options.scene) })
     } else {
       await wx.redirectTo({ url: PATH.LIST })
     }
