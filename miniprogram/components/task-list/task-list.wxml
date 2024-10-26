@@ -2,9 +2,20 @@
   <van-collapse-item
     wx:for="{{ data }}"
     wx:key="index"
-    title="{{ item.title }}"
+    title="{{  }}"
     name="{{ item.id }}"
   >
+    <view slot="title">
+      <view>
+        <text style="padding-right: 5px">{{ index + 1 }}</text>
+        <text>{{ item.title }}</text>
+      </view>
+      <view style="display: flex; gap: 5px">
+        <van-tag color="#333" wx:for="{{ item.headerList }}" wx:key="index">
+          {{ item }}
+        </van-tag>
+      </view>
+    </view>
     <task-item value="{{ item }}" expandAll />
   </van-collapse-item>
 </van-collapse>

@@ -4,7 +4,8 @@
     "pages/login/index",
     "pages/detail/index",
     "pages/follow/index",
-    "pages/signin/index"
+    "pages/signin/index",
+    "pages/editor/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",

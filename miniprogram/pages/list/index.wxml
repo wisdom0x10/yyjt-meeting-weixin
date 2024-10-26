@@ -40,6 +40,9 @@
         </view>
       </view>
       <view slot="label">
+        <view wx:if="{{ item.meetingDeptName }}">
+          {{ item.meetingDeptName }}
+        </view>
         <view style="display: flex; gap: 5px; flex-wrap: wrap">
           <van-tag
             wx:for="{{ item.labelList }}"

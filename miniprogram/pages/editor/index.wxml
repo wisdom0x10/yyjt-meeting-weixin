@@ -1,0 +1,47 @@
+<van-cell-group>
+  <van-field
+    value="{{ formData.username }}"
+    required
+    clearable
+    label="会议主题"
+    placeholder="请输入会议主题"
+  />
+  <van-field
+    value="{{ formData.username }}"
+    required
+    readonly
+    isLink
+    label="会议类型"
+    placeholder="请选择会议类型"
+    bind:click-icon="openTypePicker"
+    bind:click-input="openTypePicker"
+  />
+</van-cell-group>
+
+<van-popup
+  show="{{ typePickerVisible }}"
+  bind:close="closeTypePicker"
+  position="bottom"
+>
+  <picker mode="selector" range="{{ typeList }}" range-key="name"> 123 </picker>
+  <!-- <van-picker
+    columns="{{ typeList }}"
+    valueKey="name"
+    show-toolbar
+    bind:confirm="changeType"
+    bind:cancel="closeTypePicker"
+  /> -->
+  <van-checkbox-group bind:change="onChange">
+    <van-cell-group>
+      <van-cell
+        wx:for="{{ typeList }}"
+        wx:key="index"
+        title="{{ item.name }}"
+        clickable
+        bind:click=" "
+      >
+        <van-checkbox catch:tap="noop" name="{{ item.name }}" />
+      </van-cell>
+    </van-cell-group>
+  </van-checkbox-group>
+</van-popup>

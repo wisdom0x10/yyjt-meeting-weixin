@@ -22,6 +22,7 @@ Page({
     external: undefined as undefined | string,
     taskList: [],
     remark: undefined as undefined | string,
+    meetingDeptName: undefined,
     showButton: false,
 
     isPreMeeting: false,
@@ -68,6 +69,7 @@ Page({
         content: this.formateContent(meeting.content),
         decision: meeting.decisionMatter,
         external: meeting.extJoiner,
+        meetingDeptName: meeting.meetingDeptName ?? '',
         taskList: (meeting.meetingTaskList ?? []).map((item: any) => {
           return {
             ...item,
