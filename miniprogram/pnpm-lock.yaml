@@ -1,0 +1,54 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@vant/weapp':
+        specifier: ^1.11.6
+        version: 1.11.7
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
+      mp-html:
+        specifier: ^2.5.0
+        version: 2.5.0
+      wxminishareddata:
+        specifier: ^2.1.1
+        version: 2.1.2
+      wxmp-rsa:
+        specifier: ^2.1.0
+        version: 2.1.0
+
+packages:
+
+  '@vant/weapp@1.11.7':
+    resolution: {integrity: sha512-Rwn9BBnb4kHSV4XmvBicwtd42J+amEUfnFDcXJsGNPNX4a9c/DoT6YLsm4X1wB2+sQbdiQsbFBLAvGRBxCkD8g==}
+
+  dayjs@1.11.13:
+    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
+
+  mp-html@2.5.0:
+    resolution: {integrity: sha512-uvBH5tIaDIlj8qaxsvNXU3RKX0jvXOo3J6FAi/notUv/ds6j79UUTE82aDkxxUk0eLUU0CiCqMrR7WWnytk30Q==}
+
+  wxminishareddata@2.1.2:
+    resolution: {integrity: sha512-lFtmmukibxGXLTAL0S+jmnk57gBRmx3vOl/bGoXG7BRBEkIUWTM3pthkbxuN+GjqmGBh5DPgaaA/MxklGYxRgw==}
+
+  wxmp-rsa@2.1.0:
+    resolution: {integrity: sha512-VbWMJ+vf8t7G93sjkqjCn5yGy/Si3M8uD6OFebqjJWJ1R0WCyle7X6SNia7WWG6Qe1F2/OWxhbcSGA6ebUBwIA==}
+
+snapshots:
+
+  '@vant/weapp@1.11.7': {}
+
+  dayjs@1.11.13: {}
+
+  mp-html@2.5.0: {}
+
+  wxminishareddata@2.1.2: {}
+
+  wxmp-rsa@2.1.0: {}
