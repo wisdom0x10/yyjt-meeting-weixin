@@ -22,6 +22,8 @@ Page({
     external: undefined as undefined | string,
     taskList: [],
     remark: undefined as undefined | string,
+    taskTagText: undefined as undefined | string,
+    taskTagColor: undefined as undefined | string,
     meetingDeptName: undefined,
     showButton: false,
 
@@ -74,12 +76,27 @@ Page({
           return {
             ...item,
             checkerList: app.getUserText(item.checkerList ?? []),
-            headerList: app.getUserText(item.headerList ?? [])
+            headerList: app.getUserText(item.headerList ?? []),
+            taskTagText:
+              item.checkValue === null
+                ? '未检查'
+                : item.checkValue === 0
+                ? '已完成'
+                : '未完成',
+            taskTagColor:
+              item.checkValue === null
+                ? '#cfcfcf'
+                : item.checkValue === 0
+                ? '#95d475'
+                : '#f89898'
           }
         }),
         remark: meeting.remark,
         showButton: !meeting.unConfirmTask,
-        isPreMeeting: meeting.statusValue === -1
+        isPreMeeting: meeting.statusValue === -1,
+        taskTagText: `${meeting.checkedCount}/${meeting.taskCount}`,
+        taskTagColor:
+          meeting.checkedCount === meeting.taskCount ? '#95d475' : '#f89898'
       })
       console.log('this :>> ', this)
     } catch (error: any) {

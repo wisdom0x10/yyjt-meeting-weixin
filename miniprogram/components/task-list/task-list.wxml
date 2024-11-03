@@ -6,13 +6,16 @@
     name="{{ item.id }}"
   >
     <view slot="title">
-      <view style="display: flex">
+      <view style="display: flex; gap: 2px; align-items: center">
         <view style="padding-right: 5px; font-weight: 900; flex-shrink: 0">
           {{ index + 1 }}
         </view>
-        <view>{{ item.title }}</view>
+        <van-tag color="{{ item.taskTagColor }}">
+          {{ item.taskTagText }}
+        </van-tag>
+        <view style="flex: 1; overflow: hidden">{{ item.title }}</view>
       </view>
-      <view style="display: flex;gap: 5px;flex-wrap: wrap;">
+      <view style="display: flex; gap: 5px; flex-wrap: wrap">
         <van-tag color="#333" wx:for="{{ item.headerList }}" wx:key="index">
           {{ item }}
         </van-tag>
