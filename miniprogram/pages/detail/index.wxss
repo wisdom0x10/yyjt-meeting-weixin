@@ -10,13 +10,19 @@ page {
 }
 
 .detail_title {
-  height: 80rpx;
-  line-height: 80rpx;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
   font-weight: 900;
 }
 
 .detail_scroll {
-  height: calc(100% - 80rpx);
+  height: calc(100% - 50px);
+  --cell-horizontal-padding: 0px;
+}
+
+.clear-cell-padding {
+  --cell-vertical-padding: 0px;
 }
 
 .p-0 {

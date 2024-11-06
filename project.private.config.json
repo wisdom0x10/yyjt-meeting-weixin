@@ -10,16 +10,16 @@
     "miniprogram": {
       "list": [
         {
-          "name": "编辑",
-          "pathName": "pages/editor/index",
-          "query": "",
+          "name": "pages/detail/index",
+          "pathName": "pages/detail/index",
+          "query": "id=186",
           "launchMode": "default",
           "scene": null
         },
         {
-          "name": "pages/detail/index",
-          "pathName": "pages/detail/index",
-          "query": "id=114",
+          "name": "编辑",
+          "pathName": "pages/editor/index",
+          "query": "",
           "launchMode": "default",
           "scene": null
         },

@@ -1,3 +1,11 @@
+page {
+  --cell-font-size: 16px;
+  --cell-label-font-size: 14px;
+
+  --tag-font-size: 14px;
+  --tag-padding: 2px 4px;
+}
+
 .full-screen {
   height: 100vh;
 }

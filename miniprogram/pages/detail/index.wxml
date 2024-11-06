@@ -1,7 +1,22 @@
-<scroll-view class="scrollarea" scroll-y>
-  <van-cell title-width="200rpx" title="会议主题" value="{{ title }}" />
-  <van-cell title-width="200rpx" title="会议类型" value="{{ type }}" />
-  <van-cell title-width="200rpx" title="标签" value-class="flex-right">
+<scroll-view
+  class="scrollarea"
+  scroll-y
+>
+  <van-cell
+    title-width="200rpx"
+    title="会议主题"
+    value="{{ title }}"
+  />
+  <van-cell
+    title-width="200rpx"
+    title="会议类型"
+    value="{{ type }}"
+  />
+  <van-cell
+    title-width="200rpx"
+    title="标签"
+    value-class="flex-right"
+  >
     <van-tag
       color="{{ item.backgroundColor }}"
       text-color="{{ item.color }}"
@@ -30,8 +45,11 @@
     wx:if="{{ !isPreMeeting }}"
   >
   </van-cell>
-  <view style="padding: 10px 16px; font-size: 12px">
-    <mp-html content="{{ decision }}" slot="label" />
+  <view style="padding: 10px 16px; font-size: 16px">
+    <mp-html
+      content="{{ decision }}"
+      slot="label"
+    />
   </view>
   <van-cell
     title-width="200rpx"
@@ -65,8 +83,15 @@
     data-mode="others"
     bind:click="handleOpen"
   />
-  <view style="margin: 10rpx" wx:if="{{ showButton && !isPreMeeting }}">
-    <van-button type="primary" bind:click="confirmTask" block>
+  <view
+    style="margin: 10rpx"
+    wx:if="{{ showButton && !isPreMeeting }}"
+  >
+    <van-button
+      type="primary"
+      bind:click="confirmTask"
+      block
+    >
       确认任务
     </van-button>
   </view>
@@ -76,30 +101,45 @@
     position="bottom"
     closeable
     round
-    custom-style="height: 80%;padding-left:20rpx;padding-right:20rpx"
+    custom-style="height: 80%;padding: 0 15px"
     bind:close="handleClose"
   >
     <block wx:if="{{ mode === 'content' }}">
       <view class="detail_title"> 会议内容 </view>
-      <scroll-view class="detail_scroll" scroll-y>
+      <scroll-view
+        class="detail_scroll"
+        scroll-y
+      >
         <mp-html content="{{ content }}" />
       </scroll-view>
     </block>
     <block wx:elif="{{ mode === 'decision' }}">
       <view class="detail_title"> 决策事项 </view>
-      <scroll-view class="detail_scroll" scroll-y>
-        <mp-html content="{{ decision }}" editable="{{ true }}" />
+      <scroll-view
+        class="detail_scroll"
+        scroll-y
+      >
+        <mp-html
+          content="{{ decision }}"
+          editable="{{ true }}"
+        />
       </scroll-view>
     </block>
     <block wx:elif="{{ mode === 'task' }}">
-      <view class="detail_title"> 任务分配 </view>
-      <scroll-view class="detail_scroll" scroll-y>
+      <view class="detail_title clear-cell-padding"> 任务分配 </view>
+      <scroll-view
+        class="detail_scroll"
+        scroll-y
+      >
         <task-list data="{{ taskList }}" />
       </scroll-view>
     </block>
     <block wx:elif="{{ mode === 'others' }}">
       <view class="detail_title"> 任务分配 </view>
-      <scroll-view class="detail_scroll" scroll-y>
+      <scroll-view
+        class="detail_scroll"
+        scroll-y
+      >
         <van-cell
           title-width="200rpx"
           title="开始时间"
@@ -110,14 +150,26 @@
           title="发起部门"
           value="{{ meetingDeptName }}"
         />
-        <van-cell title-width="200rpx" title="结束时间" value="{{ endTime }}" />
-        <van-cell title-width="200rpx" title="会议地点" value="{{ address }}" />
+        <van-cell
+          title-width="200rpx"
+          title="结束时间"
+          value="{{ endTime }}"
+        />
+        <van-cell
+          title-width="200rpx"
+          title="会议地点"
+          value="{{ address }}"
+        />
         <van-cell
           title-width="200rpx"
           title="参会人员(内部)"
           value-class="flex-right"
         >
-          <van-tag color="#333" wx:for="{{ internal }}" wx:key="index">
+          <van-tag
+            color="#333"
+            wx:for="{{ internal }}"
+            wx:key="index"
+          >
             {{ item }}
           </van-tag>
         </van-cell>
@@ -139,8 +191,16 @@
             {{ recorder }}
           </van-tag>
         </van-cell>
-        <van-cell title-width="200rpx" title="抄送人" value-class="flex-right">
-          <van-tag color="#333" wx:for="{{ carbonCopyList }}" wx:key="index">
+        <van-cell
+          title-width="200rpx"
+          title="抄送人"
+          value-class="flex-right"
+        >
+          <van-tag
+            color="#333"
+            wx:for="{{ carbonCopyList }}"
+            wx:key="index"
+          >
             {{ item }}
           </van-tag>
         </van-cell>

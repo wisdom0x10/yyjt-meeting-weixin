@@ -22,11 +22,11 @@
       data-id="{{ item.id }}"
       bind:click="handleToDetail"
     >
-      <view slot="title" style="display: flex; justify-content: space-between">
-        <view style="display: flex; gap: 5px; flex: 1">
-          <view style="overflow: hidden; white-space: nowrap">
-            {{ item.theme }}
-          </view>
+      <view
+        slot="title"
+        style="display: flex; justify-content: space-between"
+      >
+        <view style="display: flex; gap: 5px; flex: 1; align-items: center">
           <van-tag
             type="primary"
             wx:if="{{ item.statusValue === -1 }}"
@@ -34,8 +34,9 @@
           >
             预约会议
           </van-tag>
+          <view> {{ item.theme }}</view>
         </view>
-        <view style="width: 50px; text-align: center; flex-shrink: 0">
+        <view style="width: 50px; flex-shrink: 0; text-align: start">
           {{ item.categoryText }}
         </view>
       </view>
@@ -43,7 +44,7 @@
         <view wx:if="{{ item.meetingDeptName }}">
           {{ item.meetingDeptName }}
         </view>
-        <view style="display: flex; gap: 5px; flex-wrap: wrap">
+        <view style="display: flex; gap: 5px; flex-wrap: wrap; padding-right: 50px">
           <van-tag
             wx:for="{{ item.labelList }}"
             wx:for-item="label"

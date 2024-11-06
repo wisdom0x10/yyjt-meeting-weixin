@@ -47,9 +47,7 @@ Page({
           ...item,
           categoryText: app.getCategoryText(item.categoryId),
           labelList: item.labelList.map((id: number) => {
-            return getStoreData().tagList.find(
-              (typeItem: any) => typeItem.id === id
-            )
+            return getStoreData().tagList.find((typeItem: any) => typeItem.id === id)
           })
         }
       })
