@@ -62,13 +62,21 @@
   />
   <van-cell
     title-width="200rpx"
-    title="任务分配"
     value="查看详情"
     is-link
     data-mode="task"
     wx:if="{{ !isPreMeeting }}"
     bind:click="handleOpen"
-  />
+  >
+    <view slot="title">
+      <view>
+        <text style="margin-right: 5px">任务分配</text>
+        <van-tag color="{{ taskTagColor }}">
+          {{ taskTagText }}
+        </van-tag>
+      </view>
+    </view>
+  </van-cell>
   <van-cell
     title-width="200rpx"
     title="备注"

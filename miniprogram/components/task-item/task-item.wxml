@@ -40,7 +40,7 @@
   <van-cell
     title-width="200rpx"
     title="检查结果"
-    value="{{ value.checkText }}"
+    value="{{ value.taskTagText }}"
     value-class="task-item-wrap"
   />
 </view>

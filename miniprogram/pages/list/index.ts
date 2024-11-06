@@ -48,7 +48,9 @@ Page({
           categoryText: app.getCategoryText(item.categoryId),
           labelList: item.labelList.map((id: number) => {
             return getStoreData().tagList.find((typeItem: any) => typeItem.id === id)
-          })
+          }),
+          taskTagText: `${item.checkedCount}/${item.taskCount}`,
+          taskTagColor: item.checkedCount === item.taskCount ? '#95d475' : '#f89898'
         }
       })
       const list = force ? responseList : [...this.data.list, ...responseList]

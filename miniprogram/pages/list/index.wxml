@@ -27,6 +27,7 @@
         style="display: flex; justify-content: space-between"
       >
         <view style="display: flex; gap: 5px; flex: 1; align-items: center">
+          <view> {{ item.theme }}</view>
           <van-tag
             type="primary"
             wx:if="{{ item.statusValue === -1 }}"
@@ -34,7 +35,13 @@
           >
             预约会议
           </van-tag>
-          <view> {{ item.theme }}</view>
+          <van-tag
+            color="{{ item.taskTagColor }}"
+            wx:else
+            style="flex-shrink: 0"
+          >
+            {{ item.taskTagText }}
+          </van-tag>
         </view>
         <view style="width: 50px; flex-shrink: 0; text-align: start">
           {{ item.categoryText }}
