@@ -1,0 +1,92 @@
+<van-field
+  value="{{ title }}"
+  label="工作任务"
+  placeholder="请输入工作任务"
+  input-align="right"
+  data-key="title"
+  bind:change="handleChange"
+/>
+<van-field
+  value="{{ description }}"
+  label="任务描述"
+  placeholder="请输入任务描述"
+  input-align="right"
+  data-key="description"
+  bind:change="handleChange"
+/>
+<van-field
+  value="{{ expectedResult }}"
+  label="任务描述"
+  placeholder="请输入预期成果"
+  input-align="right"
+  data-key="expectedResult"
+  bind:change="handleChange"
+/>
+<van-field
+  value="{{ criterion }}"
+  label="评判标准"
+  placeholder="请输入评判标准"
+  input-align="right"
+  data-key="criterion"
+  bind:change="handleChange"
+/>
+<van-cell
+  title="负责人"
+  is-link
+  data-key="headerList"
+  bind:click="handleMultiplePicker"
+>
+  <tag-list
+    wx:if="{{ headerList.length }}"
+    value="{{ headerList }}"
+    options="{{ userList }}"
+  />
+  <view wx:else>请选择负责人</view>
+</van-cell>
+<van-field
+  value="{{ incentiveMeasures }}"
+  label="奖惩措施"
+  placeholder="请输入奖惩措施"
+  input-align="right"
+  data-key="incentiveMeasures"
+  bind:change="handleChange"
+/>
+<field-datetime-picker
+  label="截止时间"
+  type="date"
+  value="{{ endTime }}"
+  placeholder="请选择截止时间"
+  data-key="endTime"
+  bind:change="handleChange"
+/>
+<van-cell
+  title="检查人"
+  is-link
+  data-key="checkerList"
+  bind:click="handleMultiplePicker"
+>
+  <tag-list
+    wx:if="{{ checkerList.length }}"
+    value="{{ checkerList }}"
+    options="{{ userList }}"
+  />
+  <view wx:else>请选择检查人</view>
+</van-cell>
+<field-picker
+  label="检查结果"
+  columns="{{ checkColumns }}"
+  value="{{ checkText }}"
+  placeholder="请选择检查结果"
+  data-key="checkText"
+  bind:change="handleChange"
+/>
+
+<view style="margin: 15px">
+  <van-button
+    type="primary"
+    block
+    bind:click="handleSubmit"
+  >
+    确认
+  </van-button>
+</view>

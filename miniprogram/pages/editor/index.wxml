@@ -1,47 +1,222 @@
-<van-cell-group>
-  <van-field
-    value="{{ formData.username }}"
-    required
-    clearable
-    label="会议主题"
-    placeholder="请输入会议主题"
-  />
-  <van-field
-    value="{{ formData.username }}"
-    required
-    readonly
-    isLink
-    label="会议类型"
-    placeholder="请选择会议类型"
-    bind:click-icon="openTypePicker"
-    bind:click-input="openTypePicker"
-  />
-</van-cell-group>
-
-<van-popup
-  show="{{ typePickerVisible }}"
-  bind:close="closeTypePicker"
-  position="bottom"
+<van-field
+  value="{{ theme }}"
+  label="会议主题"
+  placeholder="请输入会议主题"
+  input-align="right"
+  data-key="theme"
+  bind:change="handleChange"
+/>
+<field-picker
+  label="会议类型"
+  columns="{{ typeList }}"
+  value="{{ categoryId }}"
+  placeholder="请选择会议类型"
+  data-key="categoryId"
+  bind:change="handleChange"
+/>
+<van-cell
+  title="会议标签"
+  is-link
+  data-key="labelList"
+  bind:click="handleMultiplePicker"
 >
-  <picker mode="selector" range="{{ typeList }}" range-key="name"> 123 </picker>
-  <!-- <van-picker
-    columns="{{ typeList }}"
-    valueKey="name"
-    show-toolbar
-    bind:confirm="changeType"
-    bind:cancel="closeTypePicker"
-  /> -->
-  <van-checkbox-group bind:change="onChange">
-    <van-cell-group>
-      <van-cell
-        wx:for="{{ typeList }}"
+  <tag-list
+    wx:if="{{ labelList.length }}"
+    value="{{ labelList }}"
+    options="{{ tagList }}"
+  />
+  <view wx:else>请选择会议标签</view>
+</van-cell>
+<field-datetime-picker
+  label="会议开始时间"
+  value="{{ startTime }}"
+  placeholder="请选择会议开始时间"
+  data-key="startTime"
+  bind:change="handleChange"
+/>
+<field-datetime-picker
+  wx:if="{{ startTime }}"
+  label="会议结束时间"
+  min="{{ startTime }}"
+  value="{{ endTime }}"
+  placeholder="请选择会议结束时间"
+  data-key="endTime"
+  bind:change="handleChange"
+/>
+<field-cascader
+  label="发起部门"
+  placeholder="请选择发起部门"
+  fieldNames="{{ deptFieldNames }}"
+  options="{{ deptList }}"
+  value="{{ meetingDeptId }}"
+  data-key="meetingDeptId"
+  bind:change="handleChange"
+/>
+<field-datetime-picker
+  wx:if="{{ startTime && endTime && isPreMeeting }}"
+  label="签到开始时间"
+  value="{{ planStartTime }}"
+  placeholder="请选择签到开始时间"
+  data-key="planStartTime"
+  bind:change="handleChange"
+/>
+<field-datetime-picker
+  wx:if="{{ startTime && endTime && isPreMeeting && planStartTime }}"
+  label="签到结束时间"
+  min="{{ planStartTime }}"
+  value="{{ planEndTime }}"
+  placeholder="请选择签到结束时间"
+  data-key="planEndTime"
+  bind:change="handleChange"
+/>
+<van-cell
+  title="内部参会人员"
+  is-link
+  data-key="internalJoinerList"
+  bind:click="handleMultiplePicker"
+>
+  <tag-list
+    wx:if="{{ internalJoinerList.length }}"
+    value="{{ internalJoinerList }}"
+    options="{{ userList }}"
+  />
+  <view wx:else>请选择内部参会人员</view>
+</van-cell>
+<van-cell
+  wx:if="{{ internalJoinerList.length }}"
+  title="会议主持人"
+  is-link
+  data-key="moderator"
+  bind:click="handleMultiplePicker"
+>
+  <tag-list
+    wx:if="{{ moderator }}"
+    value="{{ [moderator] }}"
+    options="{{ userList }}"
+  />
+  <view wx:else>请选择会议主持人</view>
+</van-cell>
+<van-cell
+  wx:if="{{ internalJoinerList.length }}"
+  title="会议记录人"
+  is-link
+  data-key="recorder"
+  bind:click="handleMultiplePicker"
+>
+  <tag-list
+    wx:if="{{ recorder }}"
+    value="{{ [recorder] }}"
+    options="{{ userList }}"
+  />
+  <view wx:else>请选择会议记录人</view>
+</van-cell>
+<van-cell
+  title="抄送人"
+  is-link
+  data-key="carbonCopyList"
+  bind:click="handleMultiplePicker"
+>
+  <tag-list
+    wx:if="{{ carbonCopyList.length }}"
+    value="{{ carbonCopyList }}"
+    options="{{ userList }}"
+  />
+  <view wx:else>请选择抄送人</view>
+</van-cell>
+<van-field
+  value="{{ extJoiner }}"
+  label="外部参会人员"
+  placeholder="请输入外部参会人员"
+  input-align="right"
+  data-key="extJoiner"
+  bind:change="handleChange"
+/>
+<van-field
+  value="{{ address }}"
+  label="会议地点"
+  placeholder="请输入会议地点"
+  input-align="right"
+  data-key="address"
+  bind:change="handleChange"
+/>
+<van-cell
+  wx:if="{{ !isPreMeeting }}"
+  title="会议内容"
+  is-link
+  data-key="content"
+  bind:click="handleRichText"
+>
+  <view>{{ content ? '点击查看' : '请填写会议内容' }}</view>
+</van-cell>
+<van-cell
+  wx:if="{{ !isPreMeeting }}"
+  title="决策事项"
+  is-link
+  data-key="decisionMatter"
+  bind:click="handleRichText"
+>
+  <view>{{ decisionMatter ? '点击查看' : '请填写决策事项' }}</view>
+</van-cell>
+<van-cell
+  wx:if="{{ !isPreMeeting }}"
+  title="任务分配"
+  is-link
+  data-key="meetingTaskList"
+  bind:click="handleTaskVisible"
+  arrow-direction="{{ taskShow ? 'up' : 'down' }}"
+  use-label-slot
+>
+  <block wx:if="{{ taskShow }}">
+    <view
+      slot="label"
+      style="font-size: 16px"
+      catch:tap="noop"
+    >
+      <view style="display: flex; margin-bottom: 10px">
+        <van-button
+          type="primary"
+          size="small"
+          data-type="create"
+          catch:tap="handleTask"
+        >
+          新增
+        </van-button>
+      </view>
+      <view
+        wx:for="{{ meetingTaskList }}"
         wx:key="index"
-        title="{{ item.name }}"
-        clickable
-        bind:click=" "
+        style="display: flex; width: 100%"
       >
-        <van-checkbox catch:tap="noop" name="{{ item.name }}" />
-      </van-cell>
-    </van-cell-group>
-  </van-checkbox-group>
-</van-popup>
+        <view style="flex: 1">{{ item.title }}</view>
+        <view style="display: flex; gap: 10px">
+          <van-icon
+            name="edit"
+            color="#1989fa"
+            data-index="{{ index }}"
+            data-type="edit"
+            size="20px"
+            catch:tap="handleTask"
+          />
+          <van-icon
+            name="delete-o"
+            color="#ee0a24"
+            data-index="{{ index }}"
+            data-type="delete"
+            size="20px"
+            catch:tap="handleTask"
+          />
+        </view>
+      </view>
+    </view>
+  </block>
+</van-cell>
+
+<view style="margin: 15px">
+  <van-button
+    type="primary"
+    block
+    bind:click="handleSubmit"
+  >
+    确认
+  </van-button>
+</view>

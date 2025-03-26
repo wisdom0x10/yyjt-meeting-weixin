@@ -2,10 +2,13 @@
   "navigationBarTitleText": "",
   "usingComponents": {
     "van-field": "@vant/weapp/field/index",
-    "van-cell-group": "@vant/weapp/cell-group/index",
-    "van-picker": "@vant/weapp/picker/index",
-    "van-popup": "@vant/weapp/popup/index",
-    "van-checkbox": "@vant/weapp/checkbox/index",
-    "van-checkbox-group": "@vant/weapp/checkbox-group/index"
+    "field-datetime-picker": "../../components/field-datetime-picker/field-datetime-picker",
+    "field-picker": "../../components/field-picker/field-picker",
+    "field-cascader": "../../components/field-cascader/field-cascader",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "tag-list": "../../components/tag-list/tag-list",
+    "van-icon": "@vant/weapp/icon/index"
   }
 }

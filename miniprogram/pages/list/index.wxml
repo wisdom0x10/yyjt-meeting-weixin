@@ -67,3 +67,27 @@
     </van-cell>
   </van-cell-group>
 </van-swipe-cell>
+
+<view
+  class="fixed-button"
+  bind:tap="handleOpen"
+>
+  <van-icon
+    name="plus"
+    color="#fff"
+  />
+</view>
+
+<van-popup
+  show="{{ show }}"
+  position="bottom"
+  round
+  bind:close="handleClose"
+>
+  <van-picker
+    columns="{{ columns }}"
+    show-toolbar
+    bind:cancel="handleClose"
+    bind:confirm="handleCreate"
+  />
+</van-popup>

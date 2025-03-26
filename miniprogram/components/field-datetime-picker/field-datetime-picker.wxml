@@ -1,0 +1,25 @@
+<van-field
+  value="{{ value }}"
+  is-link
+  readonly
+  label="{{ label }}"
+  placeholder="{{ placeholder }}"
+  bind:tap="handleClick"
+  input-align="right"
+/>
+
+<van-popup
+  show="{{ show }}"
+  position="bottom"
+  round
+  bind:close="handleClose"
+>
+  <van-datetime-picker
+    type="{{ type }}"
+    value="{{ pickerValue }}"
+    filter="{{ filter }}"
+    minDate="{{ minDate }}"
+    bind:confirm="handleConfirm"
+    bind:cancel="handleCancel"
+  />
+</van-popup>

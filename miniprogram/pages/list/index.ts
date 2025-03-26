@@ -10,11 +10,35 @@ Page({
     size: 15,
     total: 0,
     theme: undefined as string | undefined,
-    list: [] as any[]
+    list: [] as any[],
+
+    show: false,
+    columns: [
+      { text: '预约会议', value: 0 },
+      { text: '会议', value: 1 }
+    ]
   },
   handleSearch(event: WechatMiniprogram.InputEvent) {
     this.setData({ theme: event.detail as unknown as string })
     this.refresh({ force: true })
+  },
+  handleOpen() {
+    this.setData({ show: true })
+  },
+  handleClose() {
+    this.setData({ show: false })
+  },
+  handleCreate(event: any) {
+    const that = this
+    wx.navigateTo({
+      url: `/pages/editor/index?ifPlan=${event.detail.value.value}`,
+      fail(error) {
+        console.log('[ error ] >>', error)
+      },
+      success() {
+        that.setData({ show: false })
+      }
+    })
   },
   async refresh({
     force = false,

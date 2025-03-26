@@ -19,11 +19,7 @@ export interface UserType {
   username: null | string
 }
 
-export const login = (data: {
-  code: string
-  appId: string
-  phoneCode?: string
-}) => {
+export const login = (data: { code: string; appId: string; phoneCode?: string }) => {
   return httpClient.request<UserType>({
     method: 'POST',
     url: '/wx/ma/login',
@@ -76,11 +72,7 @@ export const getUserList = () => {
   })
 }
 
-export const changeTaskStatus = (data: {
-  meetingId: number
-  type?: 0 | 1
-  status: 0 | 1 | 2
-}) => {
+export const changeTaskStatus = (data: { meetingId: number; type?: 0 | 1; status: 0 | 1 | 2 }) => {
   return httpClient.request({
     url: '/meeting/task/status',
     method: 'POST',
@@ -101,5 +93,43 @@ export const signIn = (data: { meetingId: number }) => {
     url: `/meeting/sign`,
     method: 'POST',
     data
+  })
+}
+
+export const getDeptSimpleList = () => {
+  return httpClient.request({
+    url: `/system/dept/simpleList`,
+    method: 'GET'
+  })
+}
+
+export const getUserSimpleList = () => {
+  return httpClient.request({
+    url: `/system/adminUser/simpleList?level=1`,
+    method: 'GET'
+  })
+}
+
+export const addMeeting = (data: any) => {
+  return httpClient.request({
+    url: `/meeting`,
+    method: 'POST',
+    data
+  })
+}
+
+export const updateMeeting = (data: any) => {
+  return httpClient.request({
+    url: `/meeting`,
+    method: 'PUT',
+    data
+  })
+}
+
+export const startPreMeeting = (meetingId: any) => {
+  return httpClient.request({
+    url: `/meeting/confirm`,
+    method: 'PUT',
+    data: { meetingId }
   })
 }

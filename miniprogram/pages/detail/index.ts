@@ -28,6 +28,7 @@ Page({
     showButton: false,
 
     isPreMeeting: false,
+    edit: false,
 
     visible: false,
     mode: 'content',
@@ -56,9 +57,7 @@ Page({
       this.setData({
         title: meeting.theme,
         type: app.getCategoryText(meeting.categoryId),
-        tags: store.tagList.filter((item: any) =>
-          meeting.labelList.includes(item.id)
-        ),
+        tags: store.tagList.filter((item: any) => meeting.labelList.includes(item.id)),
         planStartTime: meeting.planStartTime,
         planEndTime: meeting.planEndTime,
         startTime: meeting.startTime,
@@ -78,25 +77,17 @@ Page({
             checkerList: app.getUserText(item.checkerList ?? []),
             headerList: app.getUserText(item.headerList ?? []),
             taskTagText:
-              item.checkValue === null
-                ? '未检查'
-                : item.checkValue === 0
-                ? '已完成'
-                : '未完成',
+              item.checkValue === null ? '未检查' : item.checkValue === 0 ? '已完成' : '未完成',
             taskTagColor:
-              item.checkValue === null
-                ? '#cfcfcf'
-                : item.checkValue === 0
-                ? '#95d475'
-                : '#f89898'
+              item.checkValue === null ? '#cfcfcf' : item.checkValue === 0 ? '#95d475' : '#f89898'
           }
         }),
         remark: meeting.remark,
         showButton: !meeting.unConfirmTask,
         isPreMeeting: meeting.statusValue === -1,
+        edit: meeting.edit,
         taskTagText: `${meeting.checkedCount}/${meeting.taskCount}`,
-        taskTagColor:
-          meeting.checkedCount === meeting.taskCount ? '#95d475' : '#f89898'
+        taskTagColor: meeting.checkedCount === meeting.taskCount ? '#95d475' : '#f89898'
       })
       console.log('this :>> ', this)
     } catch (error: any) {
@@ -146,11 +137,7 @@ Page({
 
     if (!getStoreData().token) return
 
-    await Promise.allSettled([
-      app.getTagList(),
-      app.getTypeList(),
-      app.getUserList()
-    ])
+    await Promise.allSettled([app.getTagList(), app.getTypeList(), app.getUserList()])
 
     await this.refresh()
 
@@ -164,6 +151,14 @@ Page({
   },
   onChange(event: any) {
     this.setData({ activeNames: event.detail })
+  },
+  handleEdit() {
+    wx.navigateTo({ url: `/pages/editor/index?type=edit&id=${this.data.id}` })
+  },
+  async handleStart() {
+    await Api.startPreMeeting(this.data.id)
+
+    this.refresh()
   },
   // 下拉刷新时触发
   async onPullDownRefresh() {

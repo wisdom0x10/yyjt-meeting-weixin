@@ -1,0 +1,9 @@
+<view style="display: flex; flex-wrap: wrap; gap: 5px; flex-direction: row-reverse;width: 100%;">
+  <van-tag
+    color="{{ color }}"
+    wx:for="{{ showList }}"
+    wx:key="index"
+  >
+    {{ item }}
+  </van-tag>
+</view>

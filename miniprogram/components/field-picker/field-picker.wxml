@@ -1,0 +1,40 @@
+<van-field
+  value="{{ text }}"
+  is-link
+  readonly
+  label="{{ label }}"
+  placeholder="{{ placeholder }}"
+  bind:tap="handleClick"
+  input-align="right"
+/>
+
+<van-popup
+  show="{{ show }}"
+  position="bottom"
+  round
+  bind:close="handleClose"
+>
+  <van-search
+    wx:if="{{ useSearch }}"
+    value="{{ search }}"
+    placeholder="请输入搜索关键词"
+    bind:search="handleSearch"
+  />
+  <view style="margin-top: 15px; margin-bottom: 15px">
+    <van-picker
+      title="{{ label }}"
+      columns="{{ filterColumns }}"
+      defaultIndex="{{ defaultIndex }}"
+      bind:change="handleChange"
+    />
+  </view>
+  <view class="cell-picker-action">
+    <van-button bind:click="handleCancel"> 取 消 </van-button>
+    <van-button
+      bind:click="handleConfirm"
+      type="primary"
+    >
+      确 定
+    </van-button>
+  </view>
+</van-popup>

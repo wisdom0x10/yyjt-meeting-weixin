@@ -1,0 +1,5 @@
+<hg-editor
+  wx:if="{{ loaded }}"
+  bind:input="handleInput"
+  defaultValue="{{ content }}"
+/>

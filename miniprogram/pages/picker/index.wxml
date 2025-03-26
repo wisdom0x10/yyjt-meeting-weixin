@@ -1,0 +1,73 @@
+<van-search
+  value="{{ search }}"
+  placeholder="请输入搜索关键词"
+  show-action
+  bind:search="handleSearch"
+  bind:cancel="handleCancel"
+  class="{{ ['search-box', scrollTop === 0 ? '' : 'search-box--fixed '] }}"
+/>
+
+<view
+  wx:if="{{ search }}"
+  class="search-box-content"
+>
+  <van-empty
+    image="search"
+    description="暂无数据"
+    wx:if="{{ filterList.length === 0 }}"
+  />
+  <block wx:else>
+    <view
+      wx:for="{{ filterList }}"
+      wx:key="id"
+      class="{{ ['picker-item', item.selected ? 'picker-item--selected' : ''] }}"
+      data-value="{{ item.value }}"
+      data-index="{{ index }}"
+      bind:tap="handleFilterClick"
+    >
+      <view style="flex: 1">{{ item.text }}</view>
+      <view
+        wx:if="{{ item.selected }}"
+        style="margin-right: 5px"
+      >
+        √
+      </view>
+    </view>
+  </block>
+</view>
+
+<van-index-bar
+  sticky="{{ false }}"
+  index-list="{{ [] }}"
+>
+  <view
+    wx:for="{{ allList }}"
+    wx:for-item="keyItem"
+    wx:key="keyIndex"
+    wx:for-index="keyIndex"
+    class="index-bar-item"
+  >
+    <van-index-anchor
+      index="{{ keyItem.key }}"
+      wx:if="{{ showAnchor }}"
+    />
+    <view
+      wx:for="{{ keyItem.children }}"
+      wx:key="id"
+      wx:for-index="itemIndex"
+      class="{{ ['picker-item', item.selected ? 'picker-item--selected' : ''] }}"
+      data-value="{{ item.value }}"
+      data-key-index="{{ keyIndex }}"
+      data-item-index="{{ itemIndex }}"
+      bind:tap="handleClick"
+    >
+      <view style="flex: 1">{{ item.text }}</view>
+      <view
+        wx:if="{{ item.selected }}"
+        style="margin-right: 5px"
+      >
+        √
+      </view>
+    </view>
+  </view>
+</van-index-bar>

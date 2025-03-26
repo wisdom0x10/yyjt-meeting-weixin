@@ -5,10 +5,24 @@
     "compileHotReLoad": true,
     "urlCheck": false
   },
-  "libVersion": "3.5.5",
+  "libVersion": "3.7.0",
   "condition": {
     "miniprogram": {
       "list": [
+        {
+          "name": "pages/editor/index",
+          "pathName": "pages/editor/index",
+          "query": "ifPlan=2",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/picker/index",
+          "pathName": "pages/picker/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
         {
           "name": "pages/detail/index",
           "pathName": "pages/detail/index",

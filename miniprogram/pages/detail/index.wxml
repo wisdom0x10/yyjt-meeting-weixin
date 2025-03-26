@@ -93,6 +93,32 @@
   />
   <view
     style="margin: 10rpx"
+    wx:if="{{ edit }}"
+  >
+    <van-button
+      type="primary"
+      bind:click="handleEdit"
+      block
+    >
+      编辑
+    </van-button>
+  </view>
+
+  <view
+    style="margin: 10rpx"
+    wx:if="{{ edit && isPreMeeting }}"
+  >
+    <van-button
+      type="primary"
+      bind:click="handleStart"
+      block
+    >
+      开始会议
+    </van-button>
+  </view>
+
+  <view
+    style="margin: 10rpx"
     wx:if="{{ showButton && !isPreMeeting }}"
   >
     <van-button
@@ -103,6 +129,7 @@
       确认任务
     </van-button>
   </view>
+
   <view style="height: 25rpx"></view>
   <van-popup
     show="{{ visible }}"

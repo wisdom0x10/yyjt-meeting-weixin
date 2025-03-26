@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "van-field": "@vant/weapp/field/index",
+    "field-picker": "../../components/field-picker/field-picker",
+    "field-datetime-picker": "../../components/field-datetime-picker/field-datetime-picker",
+    "tag-list": "../../components/tag-list/tag-list",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-button": "@vant/weapp/button/index"
+  }
+}

@@ -1,0 +1,45 @@
+<van-field
+  value="{{ fieldValue }}"
+  is-link
+  readonly
+  label="{{ label }}"
+  placeholder="{{ placeholder }}"
+  bind:tap="handleClick"
+  input-align="right"
+/>
+<van-popup
+  show="{{ show }}"
+  round
+  position="bottom"
+  bind:close="handleClose"
+>
+  <van-cascader
+    title="{{ placeholder }}"
+    options="{{ options }}"
+    value="{{ value }}"
+    closeable="{{ false }}"
+    fieldNames="{{ fieldNames }}"
+    use-title-slot
+    bind:change="handleChange"
+  >
+    <view
+      slot="title"
+      style="display: flex; gap: 10px;width: 100%;"
+    >
+      <view style="flex: 1">{{ placeholder }}</view>.
+      <van-button
+        bind:click="handleCancel"
+        size="small"
+      >
+        取消
+      </van-button>
+      <van-button
+        bind:click="handleConfirm"
+        type="primary"
+        size="small"
+      >
+        确认
+      </van-button>
+    </view>
+  </van-cascader>
+</van-popup>

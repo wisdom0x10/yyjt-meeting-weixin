@@ -5,7 +5,10 @@
     "pages/detail/index",
     "pages/follow/index",
     "pages/signin/index",
-    "pages/editor/index"
+    "pages/editor/index",
+    "pages/picker/index",
+    "pages/rich-text/index",
+    "pages/task/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
